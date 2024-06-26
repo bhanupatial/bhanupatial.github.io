@@ -22,8 +22,8 @@ const ProfileHead = () => {
               sx={{ width: 110, height: 110, border: '4px solid #fff' }} />
           </Grid>
           <Grid item xs={10} sm={10}>
-            <Typography variant="h5" component="div">Bhanu Pratap Sing Patial</Typography>
-            <Typography variant="subtitle1" component="div">Lead Software Architect</Typography>
+            <Typography variant="h5" component="div">{ProfileSummary.name}</Typography>
+            <Typography variant="subtitle1" component="div">{ProfileSummary.role}</Typography>
             <br />
             <Typography variant="body1" component="div" style={{ textIndent: '2em' }}>{ProfileSummary.summary}</Typography>
           </Grid>

@@ -8,7 +8,7 @@ const Left = () => {
         <Grid item xs={12}>
           <Typography variant="h6" gutterBottom>Skills</Typography>
           <ul>
-            <li><Typography variant="body1" style={{ marginBottom: '10px' }}>In-depth knowledge of C, Linux system programming, Java, Spring Boot, Kafka, Cloud, CI/CD, DevOps, and Test Automation.am experienced in C, Linux system programming, Java, Springboot, Kafka, Cloud, CI/CD, DevOps, and Test Automation.</Typography></li>
+            <li><Typography variant="body1" style={{ marginBottom: '10px' }}>In-depth knowledge of C, Linux system programming, Java, Spring Boot, Kafka, Cloud, CI/CD, DevOps, and Test Automation.</Typography></li>
             <li><Typography variant="body1" style={{ marginBottom: '10px' }}>Experienced as a skilled solution architect with specialized knowledge in Oracle Tuxedo, virtualization, Linux, Oracle database, microservices, and Kubernetes.</Typography></li>
             <li><Typography variant="body1" style={{ marginBottom: '10px' }}>In-depth expertise in data centers, infrastructure components, network components, and the deployment of large-scale applications with robust load management.</Typography></li>
             <li><Typography variant="body1" style={{ marginBottom: '10px' }}>Experienced in telecom billing, rating, and customer service management.</Typography></li>
