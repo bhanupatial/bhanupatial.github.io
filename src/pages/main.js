@@ -1,51 +1,292 @@
 import * as React from "react"
-import { Box, Grid, Typography } from '@mui/material';
-
+import { Box, Typography, Chip, Paper } from '@mui/material';
 
 const MainContent = () => {
+  const jobs = [
+    {
+      title: "Lead Software Architect",
+      company: "Amdocs",
+      duration: "Nov 2022 - Present · 3 yrs",
+      description: "Leading AI transformation strategy for 500+ engineering unit building next-generation telecom BSS platforms. Architecting domain-enriched AI ecosystem that solves the core challenge: generic AI tools lack specialized domain knowledge.",
+      initiatives: [
+        "Built intelligent orchestration layer using Agentic AI, Model Context Protocol (MCP), and persistent memory to inject telecom BSS patterns into developer workflows",
+        "Evaluated 4+ AI coding assistants (Cursor, GitHub Copilot, Windsurf, Junie) over 2 years to understand gaps in specialized domains",
+        "Architected knowledge injection system enriching AI prompts with: Amdocs best practices, billing workflows, order orchestration patterns, revenue management logic, architectural guardrails",
+        "Created reusable AI tooling frameworks enabling any generic AI tool to become domain-expert for telecom digital transformation",
+      ],
+      impact: [
+        "Positioned to accelerate developer productivity 3-5x through context-aware AI assistance",
+        "Reducing onboarding time for new engineers by providing instant access to 18+ years of accumulated BSS domain knowledge",
+        "Establishing AI governance frameworks ensuring enterprise-grade code quality and architectural consistency",
+      ],
+      technologies: ["Agentic AI", "Model Context Protocol", "RAG Architecture", "Vector Databases", "Kubernetes", "Kafka"],
+    },
+    {
+      title: "System Architect",
+      company: "Netcracker Technology",
+      duration: "Jun 2021 - Nov 2022 · 1 yr 6 mos",
+      description: "Led strategic technical evaluations and security architecture initiatives for leading BSS solutions serving global telecom operators.",
+      buildSystem: [
+        "Evaluated Bazel build system as replacement for legacy make-based build infrastructure for enterprise BSS platform",
+        "Conducted comprehensive analysis of build performance, dependency management, and scalability across large-scale codebase",
+        "Assessed migration path, tooling compatibility, and developer workflow impact for production environments",
+      ],
+      security: [
+        "Identified and analyzed security vulnerabilities across BSS solution components",
+        "Designed and executed POCs for security remediation with enhanced authentication architecture",
+        "Proposed tight authentication frameworks addressing enterprise security requirements and compliance standards",
+      ],
+      technologies: [],
+    },
+    {
+      title: "Software Architect",
+      company: "Amdocs",
+      duration: "Jan 2019 - May 2021 · 2 yrs 5 mos",
+      description: "Led platform transformation of mission-critical Amdocs Billing infrastructure from HP-ia64 to x86_64 for a major Tier 1 US telecom operator—a multi-million-dollar modernization powering millions of subscribers and billions in annual revenue.",
+      achievements: [
+        "Created foundational architecture for large-scale platform portability spanning multiple Amdocs Billing products across 5 product lines",
+        "Led architectural decisions ensuring consistency and reusability; influenced product evolution using deep billing domain expertise",
+        "Designed zero-downtime migration approach maintaining 99.99% availability for production systems",
+        "Researched, evaluated, and prototyped new methodologies and technologies for distributed billing systems",
+        "Provided technical expertise on performance, scalability, reliability, and maintainability",
+        "Shaped best practice guidelines and production-ready solutions adopted across engineering organization",
+      ],
+      impactNote: "Multi-million cost reduction (eliminated HP-ia64 licensing), accelerated delivery cycles, opened path to cloud migration (AWS/Azure)",
+      technologies: [],
+    },
+    {
+      title: "Software Engineering Specialist",
+      company: "Amdocs",
+      duration: "Oct 2013 - Dec 2018 · 5 yrs 3 mos",
+      description: "Senior technical contributor for Amdocs Billing platform, driving performance optimization and system scalability initiatives that delivered measurable business impact.",
+      deliverables: [
+        "Architected ETL replacement solution reducing data processing costs by millions annually",
+        "Achieved 3x capacity increase for Amdocs Ensemble platform through systematic performance engineering",
+        "Led technical integration initiatives across 4 product teams, establishing interface design standards",
+        "Delivered 32% defect reduction in single Program Increment through shift-left testing strategies",
+      ],
+      focus: [
+        "Core technologies: Oracle Tuxedo, C, Java, enterprise integration patterns",
+        "Specialized in high-throughput transaction processing, real-time billing engines, database optimization",
+        "Served as technical authority for critical production issues affecting tier-1 telecom operators",
+      ],
+      technologies: [],
+    },
+    {
+      title: "Senior Subject Matter Expert",
+      company: "Amdocs",
+      duration: "Jan 2008 - Sep 2013 · 5 yrs 9 mos",
+      description: "Subject matter expert for Amdocs Billing core engine, responsible for critical components powering real-time rating, charging, and billing operations for major telecom operators.",
+      achievements: [
+        "Mastered Oracle Tuxedo architecture and C-based transaction processing frameworks",
+        "Designed and implemented high-performance billing algorithms processing millions of CDRs daily",
+        "Provided technical expertise for production escalations requiring deep system knowledge",
+        "Built foundation expertise in telecom BSS domain that became cornerstone of future architectural decisions",
+      ],
+      technologies: [],
+    },
+  ];
+
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Typography variant="h6" gutterBottom>Work Experience</Typography>
-      <Grid container spacing={1}>
-        {/* Amdocs Development Centre INDIA Pvt. Ltd. */}
-        <Grid item xs={12}>
-          <Typography variant="h6" style={{ fontStyle: 'italic' }}>Lead Software Architect</Typography>
-          <Typography variant="h7">Amdocs Development Centre INDIA Pvt. Ltd. (Sep 2022 – present)</Typography>
+    <Paper
+      elevation={0}
+      sx={{
+        padding: { xs: '30px 20px', md: '50px 40px' },
+        backgroundColor: 'white',
+        borderRadius: '12px',
+        boxShadow: '0 2px 10px rgba(0,0,0,0.08)',
+      }}
+      id="experience"
+    >
+      <Typography
+        variant="h3"
+        sx={{
+          fontSize: '2.2em',
+          marginBottom: 3,
+          color: '#667eea',
+          borderBottom: '3px solid #667eea',
+          paddingBottom: 2,
+        }}
+      >
+        Work Experience
+      </Typography>
 
-          <ul>
-            <li> <Typography variant="body1" style={{ marginBottom: '10px' }}>Ideated and lead the implementation of CI/CD initiatives that improved the software delivery process and reduced time-to-market.</Typography></li>
-            <li> <Typography variant="body1" style={{ marginBottom: '10px' }}>Responsible for managing the technical product roadmap and optimizing the development process.</Typography></li>
-            <li> <Typography variant="body1" style={{ marginBottom: '10px' }}>I successfully evaluated the technology of Copilot and OpenAI and demonstrated its practicality for day-to-day developer use. By integrating these tools into our workflow, I was able to significantly improve our coding proficiency, enhance code quality, and achieve considerable cost savings in our development processes.</Typography></li>
-            <li> <Typography variant="body1" style={{ marginBottom: '10px' }}>Leading team of Architects and Development Experts and DevOps specialists in matrix manager.</Typography></li>
-          </ul>
-        </Grid>
+      {jobs.map((job, index) => (
+        <Box
+          key={index}
+          sx={{
+            marginBottom: 6,
+            paddingBottom: 4,
+            borderBottom: index !== jobs.length - 1 ? '1px solid #eee' : 'none',
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              marginBottom: 2,
+              flexWrap: 'wrap',
+              gap: 1,
+            }}
+          >
+            <Box>
+              <Typography
+                sx={{
+                  fontSize: '1.6em',
+                  color: '#333',
+                  fontWeight: 700,
+                }}
+              >
+                {job.title}
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: '1.2em',
+                  color: '#667eea',
+                  fontWeight: 600,
+                }}
+              >
+                {job.company}
+              </Typography>
+            </Box>
+            <Typography sx={{ color: '#666', fontStyle: 'italic' }}>
+              {job.duration}
+            </Typography>
+          </Box>
 
-        {/* Netcracker Technology Solutions */}
-        <Grid item xs={12}>
-        <Typography variant="h6" style={{ fontStyle: 'italic' }}>Systems Architect</Typography>
-          <Typography variant="h7">Netcracker Technology Solutions (INDIA) Pvt. Ltd. (June 2021 – September 2022)</Typography>
-          <ul>
-            <li> <Typography variant="body1" style={{ marginBottom: '10px' }}>I was responsible for developing the product roadmap and driving continuous improvements.</Typography></li>
-            <li> <Typography variant="body1" style={{ marginBottom: '10px' }}>Led the initiative to modernize our build infrastructure, ensuring seamless product packaging for different platforms within our legacy system. Additionally, provided contrarian perspectives to validate the thoroughness of the team's approach.</Typography></li>
-            <li> <Typography variant="body1" style={{ marginBottom: '10px' }}>In my role as the systems architect, I was responsible for designing a cost-effective solution to manage system telemetry and monitoring within a distributed applications environment. Our implementation efficiently gathers and analyzes data from various sources within the distributed applications, ensuring seamless monitoring and control.</Typography></li>
-            <li> <Typography variant="body1" style={{ marginBottom: '10px' }}>I successfully led the re-architecture of multiple application security systems, focusing on authentication and authorization, to centrally manage users with Microsoft Active Directory. This initiative greatly enhanced our product's security and streamlined user management processes.</Typography></li>
-          </ul>
-        </Grid>
+          <Typography sx={{ marginBottom: 2, fontWeight: 500 }}>
+            {job.description}
+          </Typography>
 
-        {/* Amdocs Development Centre INDIA Pvt. Ltd. (Earlier) */}
-        <Grid item xs={12}>
-        <Typography variant="h6" style={{ fontStyle: 'italic' }}>Software Architect</Typography>
-          <Typography variant="h7">Amdocs Development Centre INDIA Pvt. Ltd. (Jan 2008 – May 2021)</Typography>
-          <ul>
-            <li> <Typography variant="body1" style={{ marginBottom: '10px' }}>Successfully laid the groundwork for the seamless migration of the legacy monolith Amdocs Ensemble product to the cloud, showcasing advanced expertise in software and infrastructure domains.</Typography></li>
-            <li> <Typography variant="body1" style={{ marginBottom: '10px' }}>I successfully led the ideation, design, and implementation of a major infrastructure transformation, focusing on platform and application portability. In my role as lead consultant and designer, I ensured the highly resilient, scalable transition of Amdocs Ensemble from legacy HP-UX to Linux. This transformation empowered the system to support three times the previous capacity, enhancing its overall resilience and performance.</Typography></li>
-            <li> <Typography variant="body1" style={{ marginBottom: '10px' }}>I designed and led the implementation of a multi-million-dollar cost-saving idea for a major US-based client. Through this initiative, I was able to save more than 10 million USD in license costs by creating a product that replaced industry-leading ETL software without impacting system performance.</Typography></li>
-            <li> <Typography variant="body1" style={{ marginBottom: '10px' }}>I lead the design and development of a sophisticated binary linkage analyzer to streamline product complexity. This product was meticulously crafted to identify redundant linked subtrees during the build process and propose their elimination, resulting in a leaner and quicker system startup, as well as a reduction in overall ecosystem storage requirements.</Typography></li>
-          </ul>
-        </Grid>
-      </Grid>
-    </Box>
-  )
+          {job.initiatives && (
+            <>
+              <Typography variant="h6" sx={{ fontSize: '1.1em', color: '#666', marginBottom: 1, marginTop: 2, fontWeight: 600 }}>
+                Key Initiatives:
+              </Typography>
+              <Box component="ul" sx={{ marginTop: 2, paddingLeft: 2.5 }}>
+                {job.initiatives.map((item, i) => (
+                  <Box component="li" key={i} sx={{ marginBottom: 1.5, lineHeight: 1.7 }}>
+                    <Typography>{item}</Typography>
+                  </Box>
+                ))}
+              </Box>
+            </>
+          )}
+
+          {job.impact && (
+            <>
+              <Typography variant="h6" sx={{ fontSize: '1.1em', color: '#666', marginBottom: 1, marginTop: 2, fontWeight: 600 }}>
+                Business Impact:
+              </Typography>
+              <Box component="ul" sx={{ marginTop: 2, paddingLeft: 2.5 }}>
+                {job.impact.map((item, i) => (
+                  <Box component="li" key={i} sx={{ marginBottom: 1.5, lineHeight: 1.7 }}>
+                    <Typography>{item}</Typography>
+                  </Box>
+                ))}
+              </Box>
+            </>
+          )}
+
+          {job.buildSystem && (
+            <>
+              <Typography variant="h6" sx={{ fontSize: '1.1em', color: '#666', marginBottom: 1, marginTop: 2, fontWeight: 600 }}>
+                Build System Modernization:
+              </Typography>
+              <Box component="ul" sx={{ marginTop: 2, paddingLeft: 2.5 }}>
+                {job.buildSystem.map((item, i) => (
+                  <Box component="li" key={i} sx={{ marginBottom: 1.5, lineHeight: 1.7 }}>
+                    <Typography>{item}</Typography>
+                  </Box>
+                ))}
+              </Box>
+            </>
+          )}
+
+          {job.security && (
+            <>
+              <Typography variant="h6" sx={{ fontSize: '1.1em', color: '#666', marginBottom: 1, marginTop: 2, fontWeight: 600 }}>
+                Security Architecture:
+              </Typography>
+              <Box component="ul" sx={{ marginTop: 2, paddingLeft: 2.5 }}>
+                {job.security.map((item, i) => (
+                  <Box component="li" key={i} sx={{ marginBottom: 1.5, lineHeight: 1.7 }}>
+                    <Typography>{item}</Typography>
+                  </Box>
+                ))}
+              </Box>
+            </>
+          )}
+
+          {job.achievements && !job.impactNote && (
+            <>
+              <Box component="ul" sx={{ marginTop: 2, paddingLeft: 2.5 }}>
+                {job.achievements.map((item, i) => (
+                  <Box component="li" key={i} sx={{ marginBottom: 1.5, lineHeight: 1.7 }}>
+                    <Typography>{item}</Typography>
+                  </Box>
+                ))}
+              </Box>
+            </>
+          )}
+
+          {job.deliverables && (
+            <>
+              <Typography variant="h6" sx={{ fontSize: '1.1em', color: '#666', marginBottom: 1, marginTop: 2, fontWeight: 600 }}>
+                Key Deliverables:
+              </Typography>
+              <Box component="ul" sx={{ marginTop: 2, paddingLeft: 2.5 }}>
+                {job.deliverables.map((item, i) => (
+                  <Box component="li" key={i} sx={{ marginBottom: 1.5, lineHeight: 1.7 }}>
+                    <Typography>{item}</Typography>
+                  </Box>
+                ))}
+              </Box>
+            </>
+          )}
+
+          {job.focus && (
+            <>
+              <Typography variant="h6" sx={{ fontSize: '1.1em', color: '#666', marginBottom: 1, marginTop: 2, fontWeight: 600 }}>
+                Technical Focus:
+              </Typography>
+              <Box component="ul" sx={{ marginTop: 2, paddingLeft: 2.5 }}>
+                {job.focus.map((item, i) => (
+                  <Box component="li" key={i} sx={{ marginBottom: 1.5, lineHeight: 1.7 }}>
+                    <Typography>{item}</Typography>
+                  </Box>
+                ))}
+              </Box>
+            </>
+          )}
+
+          {job.impactNote && (
+            <Typography sx={{ marginTop: 2, fontWeight: 500 }}>
+              <strong>Impact:</strong> {job.impactNote}
+            </Typography>
+          )}
+
+          {job.technologies && job.technologies.length > 0 && (
+            <Box sx={{ marginTop: 2, display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+              {job.technologies.map((tech, i) => (
+                <Chip
+                  key={i}
+                  label={tech}
+                  sx={{
+                    backgroundColor: '#667eea',
+                    color: 'white',
+                    fontSize: '0.9em',
+                    fontWeight: 500,
+                  }}
+                />
+              ))}
+            </Box>
+          )}
+        </Box>
+      ))}
+    </Paper>
+  );
 }
 
 export default MainContent

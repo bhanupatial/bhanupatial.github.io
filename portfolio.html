@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bhanu Patial - Lead AI Architect</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 0 60px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .tagline {
+            font-size: 1.3em;
+            margin-bottom: 30px;
+            opacity: 0.95;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.5;
+        }
+
+        .header-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .header-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1em;
+            padding: 12px 30px;
+            border: 2px solid white;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .header-links a:hover {
+            background: white;
+            color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        /* Navigation */
+        nav {
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 15px 0;
+        }
+
+        nav li {
+            margin: 0 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            transition: color 0.3s;
+            padding: 5px 10px;
+        }
+
+        nav a:hover {
+            color: #667eea;
+        }
+
+        /* Sections */
+        section {
+            background: white;
+            margin: 40px auto;
+            padding: 50px 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        section h2 {
+            font-size: 2.2em;
+            margin-bottom: 30px;
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 15px;
+        }
+
+        section h3 {
+            font-size: 1.5em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: #333;
+            font-weight: 700;
+        }
+
+        section h4 {
+            font-size: 1.1em;
+            color: #666;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .about-intro {
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-bottom: 40px;
+            color: #444;
+        }
+
+        .highlight-box {
+            background: #f8f9ff;
+            padding: 30px;
+            border-radius: 8px;
+            margin: 30px 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .highlight-box h3 {
+            margin-top: 0;
+            color: #667eea;
+        }
+
+        .highlight-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .highlight-box li {
+            padding: 8px 0;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .highlight-box li:before {
+            content: "▪";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.5em;
+        }
+
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .impact-item {
+            background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .impact-item strong {
+            display: block;
+            font-size: 1.8em;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        /* Experience */
+        .job {
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .job:last-child {
+            border-bottom: none;
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .job-title {
+            font-size: 1.6em;
+            color: #333;
+            font-weight: 700;
+        }
+
+        .job-company {
+            font-size: 1.2em;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .job-duration {
+            color: #666;
+            font-style: italic;
+        }
+
+        .job ul {
+            margin-top: 15px;
+            padding-left: 20px;
+        }
+
+        .job li {
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+
+        .tech-badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin: 5px 5px 5px 0;
+        }
+
+        /* Skills */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .skill-item {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 15px 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .skill-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 60px 40px;
+        }
+
+        .cta-section h2 {
+            color: white;
+            border: none;
+            margin-bottom: 20px;
+        }
+
+        .cta-section p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 700;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 60px;
+        }
+
+        footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            .tagline {
+                font-size: 1.1em;
+            }
+
+            section {
+                padding: 30px 20px;
+            }
+
+            section h2 {
+                font-size: 1.8em;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav li {
+                margin: 10px 0;
+            }
+
+            .job-header {
+                flex-direction: column;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            header {
+                background: #667eea;
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+
+            nav {
+                display: none;
+            }
+
+            section {
+                page-break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Bhanu Patial</h1>
+            <p class="tagline">I turn generic AI into telecom BSS experts using domain-enriched architecture | 18+ years | Lead AI Architect @ Amdocs</p>
+            <div class="header-links">
+                <a href="https://linkedin.com/in/bhanupatial" target="_blank">LinkedIn</a>
+                <a href="https://bhanupatial.github.io" target="_blank">Portfolio</a>
+                <a href="mailto:bhanupatial@gmail.com">Email</a>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <!-- About Section -->
+        <section id="about">
+            <h2>About</h2>
+            <p class="about-intro">
+                I architect AI ecosystems that inject telecom BSS domain expertise into every developer interaction. Leading AI strategy for a major engineering unit, I'm building domain-enriched AI using agentic orchestration, Model Context Protocol (MCP), and persistent memory—transforming generic AI suggestions into accurate, context-aware, enterprise-grade solutions.
+            </p>
+
+            <div class="highlight-box">
+                <h3>My Unfair Advantage</h3>
+                <p>
+                    My 18-year journey from hands-on developer → Senior SME → Software Architect → AI Strategist means I understand what developers truly need at every career stage because I've lived every phase. The best AI architects for SDLC are those who've written production code, debugged legacy systems, scaled platforms, and made architectural decisions.
+                </p>
+            </div>
+
+            <div class="highlight-box">
+                <h3>Domain-Enriched AI Approach</h3>
+                <ul>
+                    <li><strong>2+ years</strong> systematically evaluating: Junie, GitHub Copilot, Windsurf, Cursor</li>
+                    <li><strong>Key Insight:</strong> Generic AI fails in specialized domains like telecom BSS</li>
+                    <li><strong>My Solution:</strong> Intelligence layer enriching prompts with telecom BSS patterns, Amdocs best practices, billing workflows, architectural guardrails</li>
+                    <li><strong>Result:</strong> Any AI tool becomes exponentially more valuable for telecom digital transformation</li>
+                </ul>
+            </div>
+
+            <h3>Technical Expertise</h3>
+            <div class="impact-grid">
+                <div class="impact-item">
+                    <strong>BSS Platforms</strong>
+                    Oracle Tuxedo, Amdocs Ensemble
+                </div>
+                <div class="impact-item">
+                    <strong>Cloud-Native</strong>
+                    Kubernetes, Kafka, Couchbase, Microservices
+                </div>
+                <div class="impact-item">
+                    <strong>Languages</strong>
+                    C, Java, Golang, Python
+                </div>
+                <div class="impact-item">
+                    <strong>DevOps</strong>
+                    CI/CD, Container Orchestration
+                </div>
+            </div>
+
+            <h3>Proven Business Impact</h3>
+            <div class="highlight-box">
+                <ul>
+                    <li>✓ <strong>Multi-million-dollar cost reduction</strong> - ETL replacement for Amdocs Billing</li>
+                    <li>✓ <strong>3x capacity increase</strong> - Transformed Amdocs Ensemble platform scalability</li>
+                    <li>✓ <strong>32% defect reduction</strong> - Shift-left strategies in single PI</li>
+                    <li>✓ <strong>Platform modernization</strong> - HP-ia64 to x86_64 migration</li>
+                    <li>✓ <strong>Infrastructure expertise</strong> - Datacenter design, cloud migration (AWS)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience">
+            <h2>Work Experience</h2>
+
+            <div class="job">
+                <div class="job-header">
+                    <div>
+                        <div class="job-title">Lead Software Architect</div>
+                        <div class="job-company">Amdocs</div>
+                    </div>
+                    <div class="job-duration">Nov 2022 - Present · 3 yrs</div>
+                </div>
+                <p><strong>Leading AI transformation strategy for 500+ engineering unit building next-generation telecom BSS platforms.</strong> Architecting domain-enriched AI ecosystem that solves the core challenge: generic AI tools lack specialized domain knowledge.</p>
+                
+                <h4>Key Initiatives:</h4>
+                <ul>
+                    <li>Built intelligent orchestration layer using Agentic AI, Model Context Protocol (MCP), and persistent memory to inject telecom BSS patterns into developer workflows</li>
+                    <li>Evaluated 4+ AI coding assistants (Cursor, GitHub Copilot, Windsurf, Junie) over 2 years to understand gaps in specialized domains</li>
+                    <li>Architected knowledge injection system enriching AI prompts with: Amdocs best practices, billing workflows, order orchestration patterns, revenue management logic, architectural guardrails</li>
+                    <li>Created reusable AI tooling frameworks enabling any generic AI tool to become domain-expert for telecom digital transformation</li>
+                </ul>
+
+                <h4>Business Impact:</h4>
+                <ul>
+                    <li>Positioned to accelerate developer productivity 3-5x through context-aware AI assistance</li>
+                    <li>Reducing onboarding time for new engineers by providing instant access to 18+ years of accumulated BSS domain knowledge</li>
+                    <li>Establishing AI governance frameworks ensuring enterprise-grade code quality and architectural consistency</li>
+                </ul>
+
+                <div style="margin-top: 15px;">
+                    <span class="tech-badge">Agentic AI</span>
+                    <span class="tech-badge">Model Context Protocol</span>
+                    <span class="tech-badge">RAG Architecture</span>
+                    <span class="tech-badge">Vector Databases</span>
+                    <span class="tech-badge">Kubernetes</span>
+                    <span class="tech-badge">Kafka</span>
+                </div>
+            </div>
+
+            <div class="job">
+                <div class="job-header">
+                    <div>
+                        <div class="job-title">System Architect</div>
+                        <div class="job-company">Netcracker Technology</div>
+                    </div>
+                    <div class="job-duration">Jun 2021 - Nov 2022 · 1 yr 6 mos</div>
+                </div>
+                <p><strong>Led strategic technical evaluations and security architecture initiatives</strong> for leading BSS solutions serving global telecom operators.</p>
+
+                <h4>Build System Modernization:</h4>
+                <ul>
+                    <li>Evaluated Bazel build system as replacement for legacy make-based build infrastructure for enterprise BSS platform</li>
+                    <li>Conducted comprehensive analysis of build performance, dependency management, and scalability across large-scale codebase</li>
+                    <li>Assessed migration path, tooling compatibility, and developer workflow impact for production environments</li>
+                </ul>
+
+                <h4>Security Architecture:</h4>
+                <ul>
+                    <li>Identified and analyzed security vulnerabilities across BSS solution components</li>
+                    <li>Designed and executed POCs for security remediation with enhanced authentication architecture</li>
+                    <li>Proposed tight authentication frameworks addressing enterprise security requirements and compliance standards</li>
+                </ul>
+            </div>
+
+            <div class="job">
+                <div class="job-header">
+                    <div>
+                        <div class="job-title">Software Architect</div>
+                        <div class="job-company">Amdocs</div>
+                    </div>
+                    <div class="job-duration">Jan 2019 - May 2021 · 2 yrs 5 mos</div>
+                </div>
+                <p><strong>Led platform transformation of mission-critical Amdocs Billing infrastructure from HP-ia64 to x86_64</strong> for a major Tier 1 US telecom operator—a multi-million-dollar modernization powering millions of subscribers and billions in annual revenue.</p>
+
+                <ul>
+                    <li>Created foundational architecture for large-scale platform portability spanning multiple Amdocs Billing products across 5 product lines</li>
+                    <li>Led architectural decisions ensuring consistency and reusability; influenced product evolution using deep billing domain expertise</li>
+                    <li>Designed zero-downtime migration approach maintaining 99.99% availability for production systems</li>
+                    <li>Researched, evaluated, and prototyped new methodologies and technologies for distributed billing systems</li>
+                    <li>Provided technical expertise on performance, scalability, reliability, and maintainability</li>
+                    <li>Shaped best practice guidelines and production-ready solutions adopted across engineering organization</li>
+                </ul>
+
+                <p><strong>Impact:</strong> Multi-million cost reduction (eliminated HP-ia64 licensing), accelerated delivery cycles, opened path to cloud migration (AWS/Azure)</p>
+            </div>
+
+            <div class="job">
+                <div class="job-header">
+                    <div>
+                        <div class="job-title">Software Engineering Specialist</div>
+                        <div class="job-company">Amdocs</div>
+                    </div>
+                    <div class="job-duration">Oct 2013 - Dec 2018 · 5 yrs 3 mos</div>
+                </div>
+                <p><strong>Senior technical contributor for Amdocs Billing platform,</strong> driving performance optimization and system scalability initiatives that delivered measurable business impact.</p>
+
+                <h4>Key Deliverables:</h4>
+                <ul>
+                    <li>Architected ETL replacement solution reducing data processing costs by millions annually</li>
+                    <li>Achieved 3x capacity increase for Amdocs Ensemble platform through systematic performance engineering</li>
+                    <li>Led technical integration initiatives across 4 product teams, establishing interface design standards</li>
+                    <li>Delivered 32% defect reduction in single Program Increment through shift-left testing strategies</li>
+                </ul>
+
+                <h4>Technical Focus:</h4>
+                <ul>
+                    <li>Core technologies: Oracle Tuxedo, C, Java, enterprise integration patterns</li>
+                    <li>Specialized in high-throughput transaction processing, real-time billing engines, database optimization</li>
+                    <li>Served as technical authority for critical production issues affecting tier-1 telecom operators</li>
+                </ul>
+            </div>
+
+            <div class="job">
+                <div class="job-header">
+                    <div>
+                        <div class="job-title">Senior Subject Matter Expert</div>
+                        <div class="job-company">Amdocs</div>
+                    </div>
+                    <div class="job-duration">Jan 2008 - Sep 2013 · 5 yrs 9 mos</div>
+                </div>
+                <p><strong>Subject matter expert for Amdocs Billing core engine,</strong> responsible for critical components powering real-time rating, charging, and billing operations for major telecom operators.</p>
+
+                <ul>
+                    <li>Mastered Oracle Tuxedo architecture and C-based transaction processing frameworks</li>
+                    <li>Designed and implemented high-performance billing algorithms processing millions of CDRs daily</li>
+                    <li>Provided technical expertise for production escalations requiring deep system knowledge</li>
+                    <li>Built foundation expertise in telecom BSS domain that became cornerstone of future architectural decisions</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills">
+            <h2>Technical Skills</h2>
+            
+            <h3 style="margin-top: 40px;">AI & GenAI</h3>
+            <div class="skills-grid">
+                <div class="skill-item">AI Ecosystem Architecture</div>
+                <div class="skill-item">Domain-Enriched AI</div>
+                <div class="skill-item">Agentic AI</div>
+                <div class="skill-item">Model Context Protocol</div>
+                <div class="skill-item">GenAI Strategy</div>
+                <div class="skill-item">Prompt Engineering</div>
+                <div class="skill-item">RAG Architecture</div>
+                <div class="skill-item">Vector Databases</div>
+                <div class="skill-item">LangChain</div>
+                <div class="skill-item">OpenAI API</div>
+            </div>
+
+            <h3 style="margin-top: 40px;">Telecom BSS Domain</h3>
+            <div class="skills-grid">
+                <div class="skill-item">Telecom BSS Modernization</div>
+                <div class="skill-item">Billing Systems</div>
+                <div class="skill-item">Revenue Management</div>
+                <div class="skill-item">Order Management Systems</div>
+                <div class="skill-item">Customer 360</div>
+                <div class="skill-item">CRM Integration</div>
+                <div class="skill-item">Rating and Charging</div>
+                <div class="skill-item">Convergent Billing</div>
+                <div class="skill-item">Mediation Systems</div>
+            </div>
+
+            <h3 style="margin-top: 40px;">Architecture & Cloud</h3>
+            <div class="skills-grid">
+                <div class="skill-item">Enterprise Architecture</div>
+                <div class="skill-item">Cloud-Native Architecture</div>
+                <div class="skill-item">Software Architecture</div>
+                <div class="skill-item">Microservices Architecture</div>
+                <div class="skill-item">Event-Driven Architecture</div>
+                <div class="skill-item">Distributed Systems</div>
+                <div class="skill-item">API Design</div>
+                <div class="skill-item">RESTful Services</div>
+                <div class="skill-item">Message Queue Architecture</div>
+            </div>
+
+            <h3 style="margin-top: 40px;">Technologies & Platforms</h3>
+            <div class="skills-grid">
+                <div class="skill-item">Kubernetes</div>
+                <div class="skill-item">Docker</div>
+                <div class="skill-item">Kafka</div>
+                <div class="skill-item">Couchbase</div>
+                <div class="skill-item">Redis</div>
+                <div class="skill-item">Oracle Tuxedo</div>
+                <div class="skill-item">Amdocs Ensemble</div>
+                <div class="skill-item">PostgreSQL</div>
+                <div class="skill-item">AWS</div>
+                <div class="skill-item">Cloud Migration</div>
+            </div>
+
+            <h3 style="margin-top: 40px;">DevOps & Languages</h3>
+            <div class="skills-grid">
+                <div class="skill-item">CI/CD Pipelines</div>
+                <div class="skill-item">DevOps</div>
+                <div class="skill-item">GitLab CI/CD</div>
+                <div class="skill-item">Jenkins</div>
+                <div class="skill-item">Infrastructure as Code</div>
+                <div class="skill-item">Java</div>
+                <div class="skill-item">Golang</div>
+                <div class="skill-item">C</div>
+                <div class="skill-item">Python</div>
+            </div>
+
+            <h3 style="margin-top: 40px;">Leadership & Strategy</h3>
+            <div class="skills-grid">
+                <div class="skill-item">Digital Transformation</div>
+                <div class="skill-item">Cost Optimization</div>
+                <div class="skill-item">Technical Leadership</div>
+                <div class="skill-item">Agile Architecture</div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section id="contact" class="cta-section">
+            <h2>Open to Conversations About</h2>
+            <div style="max-width: 800px; margin: 0 auto;">
+                <ul style="list-style: none; padding: 0; font-size: 1.1em; margin-bottom: 40px;">
+                    <li style="padding: 10px 0;">• AI transformation strategies for telecom/enterprise platforms</li>
+                    <li style="padding: 10px 0;">• Strategic architecture roles (VP Engineering, Chief Architect, Technical Fellow)</li>
+                    <li style="padding: 10px 0;">• Advisory and consulting engagements in domain-enriched AI</li>
+                </ul>
+            </div>
+            <div class="cta-buttons">
+                <a href="https://linkedin.com/in/bhanupatial" target="_blank" class="cta-button">Connect on LinkedIn</a>
+                <a href="mailto:bhanupatial@gmail.com" class="cta-button">Send Email</a>
+                <a href="https://bhanupatial.github.io" target="_blank" class="cta-button">View Portfolio</a>
+            </div>
+            <p style="margin-top: 40px; font-size: 1.1em;">💬 DM me "AI STRATEGY" or connect to explore how domain expertise transforms AI effectiveness.</p>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Bhanu Patial. All rights reserved.</p>
+            <p style="margin-top: 10px;">
+                <a href="https://linkedin.com/in/bhanupatial" target="_blank">LinkedIn</a> | 
+                <a href="https://bhanupatial.github.io" target="_blank">Portfolio</a> | 
+                <a href="mailto:bhanupatial@gmail.com">bhanupatial@gmail.com</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const section = document.querySelector(this.getAttribute('href'));
+                section.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Add fade-in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
+

@@ -3,10 +3,59 @@
  */
 module.exports = {
   siteMetadata: {
-    title: `Bhanu Patial`,
-    siteUrl: `https://bhanupatial.github.io`
+    title: `Bhanu Patial - Lead AI Architect`,
+    description: `I turn generic AI into telecom BSS experts using domain-enriched architecture | 18+ years experience | Lead AI Architect @ Amdocs`,
+    author: `Bhanu Patial`,
+    siteUrl: `https://bhanupatial.github.io`,
+    keywords: `AI Architect, Telecom BSS, Domain-Enriched AI, Agentic AI, Model Context Protocol, Software Architecture, Kubernetes, Kafka, Lead Architect`,
+    image: `/static/bhanupatial-e611736744edb77a72c39f9a4bfcbd79.jpeg`,
+    twitterUsername: `@bhanupatial`,
   },
   plugins: [
+    `gatsby-plugin-react-helmet`,
+    {
+      resolve: `gatsby-plugin-sitemap`,
+      options: {
+        output: `/`,
+        excludes: ['/404', '/404.html', '/dev-404-page'],
+        query: `
+          {
+            site {
+              siteMetadata {
+                siteUrl
+              }
+            }
+            allSitePage {
+              nodes {
+                path
+              }
+            }
+          }
+        `,
+        resolveSiteUrl: () => 'https://bhanupatial.github.io',
+        serialize: ({ path, modifiedGmt }) => {
+          return {
+            url: path,
+            changefreq: 'monthly',
+            priority: path === '/' ? 1.0 : 0.7,
+          }
+        },
+      },
+    },
+    {
+      resolve: 'gatsby-plugin-robots-txt',
+      options: {
+        host: 'https://bhanupatial.github.io',
+        sitemap: 'https://bhanupatial.github.io/sitemap-index.xml',
+        policy: [
+          {
+            userAgent: '*',
+            allow: '/',
+            disallow: ['/404', '/404.html'],
+          }
+        ],
+      },
+    },
     {
       resolve: `gatsby-plugin-google-gtag`,
       options: {

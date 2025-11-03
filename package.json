@@ -22,12 +22,15 @@
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.20",
     "@mui/material": "^5.15.20",
-    "@mui/styles": "^5.15.20",
     "ajv": "^8.16.0",
     "gatsby": "^5.13.5",
     "gatsby-plugin-google-gtag": "^5.13.1",
+    "gatsby-plugin-react-helmet": "^6.15.0",
+    "gatsby-plugin-robots-txt": "^1.8.0",
+    "gatsby-plugin-sitemap": "^6.15.0",
     "gh-pages": "^6.1.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-helmet": "^6.1.0"
   }
 }

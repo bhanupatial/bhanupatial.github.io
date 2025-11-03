@@ -1,40 +1,123 @@
 import * as React from "react"
-import { Paper, Typography, Grid, Box, Avatar } from "@mui/material";
-import profilePicture from '../images/bhanupatial.jpeg';
-
-// Component
+import { Box, Typography, Button } from "@mui/material";
 
 const ProfileHead = () => {
-
-
-  const ProfileSummary = {
-    name: "Bhanu Pratap Singh Patial",
-    role: "Lead Software Architect",
-    summary: "I am a highly innovative and results-driven Software Architect with over 17 years of experience. I have expertise in leading complex projects, driving technical innovation, and delivering high-value solutions. My skills include optimizing performance, spearheading CI/CD initiatives, and integrating cutting-edge technologies. I am recognized for delivering multi-million-dollar savings through strategic system redesigns and fostering a culture of technical excellence.",
-  }
-
   return (
-    <Paper elevation={3} sx={{ width: '100%', height: '100%', backgroundColor: '#ccd7db', borderRadius: '10px' }}>
-      <Box sx={{ flexGrow: 1 }} style={{ width: '100%', height: '100%' }}>
-        <Grid container spacing={1} sx={{ flexDirection: { xs: 'column', sm: 'row' } }} >
-          <Grid item xs={2} sm={2} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Avatar alt="Profile Picture" src={profilePicture}
-              sx={{ width: 110, height: 110, border: '4px solid #fff' }} />
-          </Grid>
-          <Grid item xs={10} sm={10}>
-            <Typography variant="h5" component="div">{ProfileSummary.name}</Typography>
-            <Typography variant="subtitle1" component="div">{ProfileSummary.role}</Typography>
-            <br />
-            <Typography variant="body1" component="div" style={{ textIndent: '2em' }}>{ProfileSummary.summary}</Typography>
-          </Grid>
-        </Grid>
+    <Box
+      sx={{
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        color: 'white',
+        padding: { xs: '60px 20px 40px', md: '80px 40px 60px' },
+        textAlign: 'center',
+        borderRadius: '12px',
+        boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+      }}
+    >
+      <Typography
+        variant="h2"
+        sx={{
+          fontSize: { xs: '2em', md: '2.5em' },
+          fontWeight: 700,
+          marginBottom: 2,
+        }}
+      >
+        Bhanu Patial
+      </Typography>
+      
+      <Typography
+        sx={{
+          fontSize: { xs: '1.1em', md: '1.3em' },
+          marginBottom: 3,
+          opacity: 0.95,
+          maxWidth: '900px',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          lineHeight: 1.5,
+        }}
+      >
+        I turn generic AI into telecom BSS experts using domain-enriched architecture | 18+ years | Lead AI Architect @ Amdocs
+      </Typography>
+      
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          gap: 3,
+          flexWrap: 'wrap',
+          marginTop: 4,
+        }}
+      >
+        <Button
+          href="https://linkedin.com/in/bhanupatial"
+          target="_blank"
+          variant="outlined"
+          sx={{
+            color: 'white',
+            borderColor: 'white',
+            borderWidth: 2,
+            borderRadius: '30px',
+            padding: '12px 30px',
+            fontSize: '1.1em',
+            fontWeight: 500,
+            '&:hover': {
+              backgroundColor: 'white',
+              color: '#667eea',
+              borderColor: 'white',
+              transform: 'translateY(-2px)',
+            },
+            transition: 'all 0.3s ease',
+          }}
+        >
+          LinkedIn
+        </Button>
+        <Button
+          href="https://bhanupatial.github.io"
+          target="_blank"
+          variant="outlined"
+          sx={{
+            color: 'white',
+            borderColor: 'white',
+            borderWidth: 2,
+            borderRadius: '30px',
+            padding: '12px 30px',
+            fontSize: '1.1em',
+            fontWeight: 500,
+            '&:hover': {
+              backgroundColor: 'white',
+              color: '#667eea',
+              borderColor: 'white',
+              transform: 'translateY(-2px)',
+            },
+            transition: 'all 0.3s ease',
+          }}
+        >
+          Portfolio
+        </Button>
+        <Button
+          href="mailto:bhanupatial@gmail.com"
+          variant="outlined"
+          sx={{
+            color: 'white',
+            borderColor: 'white',
+            borderWidth: 2,
+            borderRadius: '30px',
+            padding: '12px 30px',
+            fontSize: '1.1em',
+            fontWeight: 500,
+            '&:hover': {
+              backgroundColor: 'white',
+              color: '#667eea',
+              borderColor: 'white',
+              transform: 'translateY(-2px)',
+            },
+            transition: 'all 0.3s ease',
+          }}
+        >
+          Email
+        </Button>
       </Box>
-    </Paper>
+    </Box>
   );
-
 }
-
-
-
 
 export default ProfileHead
