@@ -3,15 +3,23 @@
  */
 module.exports = {
   siteMetadata: {
-    title: `Bhanu Patial - Lead AI Architect`,
-    description: `I turn generic AI into telecom BSS experts using domain-enriched architecture | 18+ years experience | Lead AI Architect @ Amdocs`,
+    title: `Bhanu Patial - Lead Software Architect`,
+    description: `Lead Software Architect with 18+ years building mission-critical telecom billing systems at scale | Deep expertise in Amdocs Ensemble, platform modernization, and AI-augmented software engineering`,
     author: `Bhanu Patial`,
     siteUrl: `https://bhanupatial.github.io`,
-    keywords: `AI Architect, Telecom BSS, Domain-Enriched AI, Agentic AI, Model Context Protocol, Software Architecture, Kubernetes, Kafka, Lead Architect`,
+    keywords: `Software Architect, Telecom BSS, Amdocs Ensemble, Platform Modernization, AI-Augmented Engineering, Kubernetes, Kafka, Lead Architect`,
     image: `/static/bhanupatial-e611736744edb77a72c39f9a4bfcbd79.jpeg`,
     twitterUsername: `@bhanupatial`,
   },
   plugins: [
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `content`,
+        path: `${__dirname}/content`,
+      },
+    },
+    `gatsby-transformer-remark`,
     `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-plugin-sitemap`,
