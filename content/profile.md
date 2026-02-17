@@ -19,8 +19,6 @@ links:
     href: https://linkedin.com/in/bhanupatial
   - label: Email
     href: mailto:bhanupatial@gmail.com
-  - label: Phone
-    href: "tel:+919764006178"
 
 education:
   - degree: Master of Computer Applications
