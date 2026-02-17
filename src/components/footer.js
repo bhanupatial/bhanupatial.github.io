@@ -1,66 +1,23 @@
-import * as React from "react"
-import { Box, Typography, Link } from "@mui/material";
+import React from "react"
+import { Box, Typography } from "@mui/material"
 
-const Footer = () => {
+const Footer = ({ copyright }) => {
+  if (!copyright) return null
   return (
     <Box
       component="footer"
       sx={{
-        backgroundColor: '#333',
-        color: 'white',
+        py: 2,
         textAlign: 'center',
-        padding: '30px 20px',
-        marginTop: 8,
+        borderTop: '1px solid #e2e8f0',
+        backgroundColor: '#f8fafc',
       }}
     >
-      <Typography variant="body1">
-        &copy; 2025 Bhanu Patial. All rights reserved.
+      <Typography sx={{ color: '#94a3b8', fontSize: '0.78rem' }}>
+        {copyright}
       </Typography>
-      <Box sx={{ marginTop: 1.5 }}>
-        <Link 
-          href="https://linkedin.com/in/bhanupatial" 
-          target="_blank"
-          sx={{ 
-            color: '#667eea', 
-            textDecoration: 'none',
-            '&:hover': {
-              textDecoration: 'underline',
-            }
-          }}
-        >
-          LinkedIn
-        </Link>
-        {' | '}
-        <Link 
-          href="https://bhanupatial.github.io" 
-          target="_blank"
-          sx={{ 
-            color: '#667eea', 
-            textDecoration: 'none',
-            '&:hover': {
-              textDecoration: 'underline',
-            }
-          }}
-        >
-          Portfolio
-        </Link>
-        {' | '}
-        <Link 
-          href="mailto:bhanupatial@gmail.com"
-          sx={{ 
-            color: '#667eea', 
-            textDecoration: 'none',
-            '&:hover': {
-              textDecoration: 'underline',
-            }
-          }}
-        >
-          bhanupatial@gmail.com
-        </Link>
-      </Box>
     </Box>
-  );
+  )
 }
 
 export default Footer
-

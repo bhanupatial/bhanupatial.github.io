@@ -1,123 +1,83 @@
-import * as React from "react"
-import { Box, Typography, Button } from "@mui/material";
+import React from "react"
+import { Box, Typography, Grid } from "@mui/material"
+import profilePhoto from "../images/bhanupatial.jpeg"
 
-const ProfileHead = () => {
+const ProfileHead = ({ name, role, tagline }) => {
+  if (!name) return null
   return (
     <Box
       sx={{
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        background: '#2d3748',
         color: 'white',
-        padding: { xs: '60px 20px 40px', md: '80px 40px 60px' },
-        textAlign: 'center',
-        borderRadius: '12px',
-        boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+        py: { xs: 4, md: 5 },
+        px: { xs: 3, md: 6 },
       }}
     >
-      <Typography
-        variant="h2"
-        sx={{
-          fontSize: { xs: '2em', md: '2.5em' },
-          fontWeight: 700,
-          marginBottom: 2,
-        }}
-      >
-        Bhanu Patial
-      </Typography>
-      
-      <Typography
-        sx={{
-          fontSize: { xs: '1.1em', md: '1.3em' },
-          marginBottom: 3,
-          opacity: 0.95,
-          maxWidth: '900px',
-          marginLeft: 'auto',
-          marginRight: 'auto',
-          lineHeight: 1.5,
-        }}
-      >
-        I turn generic AI into telecom BSS experts using domain-enriched architecture | 18+ years | Lead AI Architect @ Amdocs
-      </Typography>
-      
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          gap: 3,
-          flexWrap: 'wrap',
-          marginTop: 4,
-        }}
-      >
-        <Button
-          href="https://linkedin.com/in/bhanupatial"
-          target="_blank"
-          variant="outlined"
-          sx={{
-            color: 'white',
-            borderColor: 'white',
-            borderWidth: 2,
-            borderRadius: '30px',
-            padding: '12px 30px',
-            fontSize: '1.1em',
-            fontWeight: 500,
-            '&:hover': {
-              backgroundColor: 'white',
-              color: '#667eea',
-              borderColor: 'white',
-              transform: 'translateY(-2px)',
-            },
-            transition: 'all 0.3s ease',
-          }}
-        >
-          LinkedIn
-        </Button>
-        <Button
-          href="https://bhanupatial.github.io"
-          target="_blank"
-          variant="outlined"
-          sx={{
-            color: 'white',
-            borderColor: 'white',
-            borderWidth: 2,
-            borderRadius: '30px',
-            padding: '12px 30px',
-            fontSize: '1.1em',
-            fontWeight: 500,
-            '&:hover': {
-              backgroundColor: 'white',
-              color: '#667eea',
-              borderColor: 'white',
-              transform: 'translateY(-2px)',
-            },
-            transition: 'all 0.3s ease',
-          }}
-        >
-          Portfolio
-        </Button>
-        <Button
-          href="mailto:bhanupatial@gmail.com"
-          variant="outlined"
-          sx={{
-            color: 'white',
-            borderColor: 'white',
-            borderWidth: 2,
-            borderRadius: '30px',
-            padding: '12px 30px',
-            fontSize: '1.1em',
-            fontWeight: 500,
-            '&:hover': {
-              backgroundColor: 'white',
-              color: '#667eea',
-              borderColor: 'white',
-              transform: 'translateY(-2px)',
-            },
-            transition: 'all 0.3s ease',
-          }}
-        >
-          Email
-        </Button>
+      <Box sx={{ maxWidth: 1100, mx: 'auto' }}>
+        <Grid container spacing={4} alignItems="center">
+          {/* Photo */}
+          <Grid item xs={12} sm="auto">
+            <Box
+              component="img"
+              src={profilePhoto}
+              alt={name}
+              sx={{
+                width: { xs: 120, md: 150 },
+                height: { xs: 120, md: 150 },
+                borderRadius: '50%',
+                objectFit: 'cover',
+                border: '4px solid rgba(255,255,255,0.2)',
+                display: 'block',
+                mx: { xs: 'auto', sm: 0 },
+              }}
+            />
+          </Grid>
+
+          {/* Name & Info */}
+          <Grid item xs={12} sm>
+            <Typography
+              variant="h1"
+              sx={{
+                fontSize: { xs: '2rem', md: '2.8rem' },
+                fontWeight: 700,
+                lineHeight: 1.1,
+                mb: 0.5,
+                textAlign: { xs: 'center', sm: 'left' },
+              }}
+            >
+              {name}
+            </Typography>
+            {role && (
+              <Typography
+                sx={{
+                  fontSize: { xs: '1.1rem', md: '1.3rem' },
+                  fontWeight: 400,
+                  color: 'rgba(255,255,255,0.8)',
+                  mb: 1.5,
+                  textAlign: { xs: 'center', sm: 'left' },
+                }}
+              >
+                {role}
+              </Typography>
+            )}
+            {tagline && (
+              <Typography
+                sx={{
+                  fontSize: { xs: '0.88rem', md: '0.95rem' },
+                  color: 'rgba(255,255,255,0.6)',
+                  lineHeight: 1.65,
+                  maxWidth: 600,
+                  textAlign: { xs: 'center', sm: 'left' },
+                }}
+              >
+                {tagline}
+              </Typography>
+            )}
+          </Grid>
+        </Grid>
       </Box>
     </Box>
-  );
+  )
 }
 
 export default ProfileHead

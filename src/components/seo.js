@@ -104,7 +104,7 @@ const SEO = ({ description, title, image, article }) => {
           "@context": "https://schema.org",
           "@type": "Person",
           "name": "Bhanu Patial",
-          "jobTitle": "Lead AI Architect",
+          "jobTitle": "Lead Software Architect",
           "worksFor": {
             "@type": "Organization",
             "name": "Amdocs"
@@ -116,12 +116,12 @@ const SEO = ({ description, title, image, article }) => {
           ],
           "description": metaDescription,
           "knowsAbout": [
-            "AI Architecture",
-            "Domain-Enriched AI",
-            "Telecom BSS",
-            "Agentic AI",
-            "Model Context Protocol",
             "Software Architecture",
+            "Telecom BSS",
+            "Amdocs Ensemble",
+            "Platform Modernization",
+            "AI-Augmented Engineering",
+            "Agentic AI",
             "Kubernetes",
             "Kafka"
           ]

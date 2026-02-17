@@ -10,8 +10,7 @@ export default IndexPage
 
 export const Head = () => (
   <SEO 
-    title="Bhanu Patial - Lead AI Architect"
-    description="I turn generic AI into telecom BSS experts using domain-enriched architecture | 18+ years | Lead AI Architect @ Amdocs"
+    title="Bhanu Patial - Lead Software Architect"
+    description="Lead Software Architect with 18+ years building mission-critical telecom billing systems at scale | Deep expertise in platform modernization and AI-augmented engineering"
   />
 )
-
