@@ -1,454 +1,1042 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { useStaticQuery, graphql } from "gatsby"
-import { Box, Typography } from "@mui/material"
+import { Box, Typography, Tooltip, IconButton } from "@mui/material"
+import LinkedInIcon from "@mui/icons-material/LinkedIn"
+import EmailIcon from "@mui/icons-material/Email"
+import FileDownloadIcon from "@mui/icons-material/FileDownload"
+import DarkModeIcon from "@mui/icons-material/DarkMode"
+import LightModeIcon from "@mui/icons-material/LightMode"
+import MenuIcon from "@mui/icons-material/Menu"
+import CloseIcon from "@mui/icons-material/Close"
 import profilePhoto from "../images/bhanupatial.jpeg"
 
-/* ─── Color Constants ─── */
-const TEAL = "#1a8aaa"
-const TEAL_DARK = "#0d6e84"
-const SIDEBAR_BG_TOP = "#dce6ec"
-const SIDEBAR_BG_BOTTOM = "#b8ced8"
-const TEXT_DARK = "#333333"
-const TEXT_BODY = "#444444"
+/* ─── Nav sections ─── */
+const NAV_LINKS = [
+  { label: "About",      id: "about" },
+  { label: "Experience", id: "experience" },
+  { label: "Skills",     id: "skills" },
+  { label: "Education",  id: "education" },
+]
 
-/* ─── Sidebar Section Header ─── */
-const SidebarSectionHeader = ({ children }) => (
+/* ─── Per-category chip palette ─── */
+const CHIP_COLORS = [
+  { bg: "var(--chip-1-bg)", border: "var(--chip-1-border)", text: "var(--chip-1-text)" },
+  { bg: "var(--chip-2-bg)", border: "var(--chip-2-border)", text: "var(--chip-2-text)" },
+  { bg: "var(--chip-3-bg)", border: "var(--chip-3-border)", text: "var(--chip-3-text)" },
+  { bg: "var(--chip-4-bg)", border: "var(--chip-4-border)", text: "var(--chip-4-text)" },
+  { bg: "var(--chip-5-bg)", border: "var(--chip-5-border)", text: "var(--chip-5-text)" },
+]
+
+/* ─── keys that hold bullet arrays in an experience entry ─── */
+const DETAIL_KEYS = ["initiatives", "buildSystem", "security", "achievements", "deliverables", "focus"]
+/* ─── Reusable: Section heading with accent underbar ─── */
+const SectionHeader = ({ children }) => (
+  <Box sx={{ mb: 5 }}>
+    <Typography
+      component="h2"
+      sx={{
+        fontSize: { xs: "1.5rem", md: "1.875rem" },
+        fontWeight: 800,
+        color: "var(--text-primary)",
+        letterSpacing: "-0.03em",
+        lineHeight: 1.2,
+        position: "relative",
+        display: "inline-block",
+        "&::after": {
+          content: '""',
+          position: "absolute",
+          bottom: -8,
+          left: 0,
+          width: 44,
+          height: 4,
+          borderRadius: 2,
+          bgcolor: "var(--accent)",
+        },
+      }}
+    >
+      {children}
+    </Typography>
+  </Box>
+)
+
+/* ─── Reusable: Overline label ─── */
+const Overline = ({ children }) => (
   <Typography
     sx={{
-      fontSize: "0.95rem",
+      fontSize: "0.75rem",
       fontWeight: 700,
-      color: TEAL,
+      color: "var(--accent)",
       textTransform: "uppercase",
-      letterSpacing: "0.04em",
+      letterSpacing: "0.1em",
       mb: 1.5,
-      pb: 0.8,
-      borderBottom: `2px solid ${TEAL}`,
     }}
   >
     {children}
   </Typography>
 )
 
-/* ─── Main Section Header ─── */
-const MainSectionHeader = ({ children }) => (
-  <Typography
+/* ─── Reusable: Card wrapper ─── */
+const Card = ({ children, sx = {} }) => (
+  <Box
+    className="print-card"
     sx={{
-      fontSize: "1.1rem",
-      fontWeight: 700,
-      color: TEAL,
-      textTransform: "uppercase",
-      letterSpacing: "0.04em",
-      mb: 2,
-      pb: 0.8,
-      borderBottom: `2px solid ${TEAL}`,
+      bgcolor: "var(--bg-card)",
+      border: "1px solid var(--border)",
+      borderRadius: 2.5,
+      p: { xs: 2.5, md: 3 },
+      boxShadow: "var(--shadow-sm)",
+      transition: "box-shadow 0.2s, border-color 0.2s",
+      "&:hover": { boxShadow: "var(--shadow-md)", borderColor: "var(--accent-border)" },
+      ...sx,
     }}
   >
     {children}
-  </Typography>
+  </Box>
 )
 
-/* ─── Contact Box ─── */
-const ContactBox = ({ links }) => {
-  if (!links?.length) return null
+/* ─────────────────────────────────────────────────
+   STICKY NAVIGATION
+───────────────────────────────────────────────── */
+const StickyNav = ({ name, isDark, onToggle }) => {
+  const [scrolled, setScrolled]       = useState(false)
+  const [mobileOpen, setMobileOpen]   = useState(false)
+  const [active, setActive]           = useState("")
 
-  const phoneLink = links.find((l) => l.href?.startsWith("tel:"))
-  const emailLink = links.find((l) => l.href?.startsWith("mailto:"))
+  useEffect(() => {
+    const onScroll = () => {
+      setScrolled(window.scrollY > 50)
+      for (const { id } of [...NAV_LINKS].reverse()) {
+        const el = document.getElementById(id)
+        if (el && el.getBoundingClientRect().top <= 80) { setActive(id); return }
+      }
+      setActive("")
+    }
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
 
-  const phoneDisplay = phoneLink
-    ? phoneLink.href.replace("tel:", "").replace(/\+(\d{2})(\d{3})(\d{3})(\d{4})/, "+$1-$2-$3-$4")
-    : null
-  const emailDisplay = emailLink
-    ? emailLink.href.replace("mailto:", "")
-    : null
+  const scrollTo = (id) => {
+    setMobileOpen(false)
+    const el = document.getElementById(id)
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" })
+  }
+
+  const navTextColor = (id) => {
+    const isActive = active === id
+    return scrolled
+      ? isActive ? "var(--accent)" : "var(--text-secondary)"
+      : isActive ? "#38bdf8"       : "rgba(255,255,255,0.80)"
+  }
+
+  return (
+    <>
+      <Box
+        component="nav"
+        className="no-print"
+        sx={{
+          position: "fixed",
+          top: 0, left: 0, right: 0,
+          zIndex: 100,
+          height: 64,
+          display: "flex",
+          alignItems: "center",
+          px: { xs: 2, sm: 3, md: 5 },
+          gap: 2,
+          backgroundColor: scrolled ? "var(--bg-nav)" : "transparent",
+          backdropFilter: scrolled ? "blur(16px)" : "none",
+          WebkitBackdropFilter: scrolled ? "blur(16px)" : "none",
+          borderBottom: scrolled ? "1px solid var(--border)" : "none",
+          transition: "background-color 0.3s, border-color 0.3s",
+        }}
+      >
+        {/* Brand initials */}
+        <Typography
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          sx={{
+            fontSize: "1.0625rem",
+            fontWeight: 800,
+            color: scrolled ? "var(--accent)" : "#ffffff",
+            letterSpacing: "0.02em",
+            cursor: "pointer",
+            mr: "auto",
+            userSelect: "none",
+            transition: "color 0.3s",
+          }}
+        >
+          {(name || "").split(" ").map(w => w[0]).join("").slice(0, 2)}
+        </Typography>
+
+        {/* Desktop links */}
+        <Box sx={{ display: { xs: "none", md: "flex" }, gap: 0.25 }}>
+          {NAV_LINKS.map(({ label, id }) => (
+            <Box
+              key={id}
+              component="button"
+              onClick={() => scrollTo(id)}
+              sx={{
+                px: 1.75, py: 0.625,
+                fontSize: "0.875rem",
+                fontWeight: active === id ? 600 : 400,
+                color: navTextColor(id),
+                background: "none",
+                border: "none",
+                borderRadius: 1.5,
+                cursor: "pointer",
+                transition: "color 0.2s",
+                "&:hover": { color: scrolled ? "var(--accent)" : "#ffffff" },
+              }}
+            >
+              {label}
+            </Box>
+          ))}
+        </Box>
+
+        {/* Actions */}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Tooltip title={isDark ? "Light mode" : "Dark mode"}>
+            <IconButton
+              onClick={onToggle}
+              size="small"
+              aria-label="Toggle dark mode"
+              sx={{
+                color: scrolled ? "var(--text-secondary)" : "rgba(255,255,255,0.80)",
+                "&:hover": { color: "var(--accent)", bgcolor: "var(--accent-muted)" },
+              }}
+            >
+              {isDark
+                ? <LightModeIcon sx={{ fontSize: 19 }} />
+                : <DarkModeIcon  sx={{ fontSize: 19 }} />}
+            </IconButton>
+          </Tooltip>
+
+          <Box
+            component="button"
+            onClick={() => window.print()}
+            sx={{
+              display: { xs: "none", sm: "inline-flex" },
+              alignItems: "center",
+              gap: 0.75,
+              px: 2, py: 0.75,
+              fontSize: "0.8125rem",
+              fontWeight: 600,
+              color: "var(--accent)",
+              bgcolor: "var(--accent-muted)",
+              border: "1px solid var(--accent-border)",
+              borderRadius: 2,
+              cursor: "pointer",
+              transition: "all 0.2s",
+              "&:hover": { bgcolor: "var(--accent)", color: "#fff", borderColor: "var(--accent)" },
+            }}
+          >
+            <FileDownloadIcon sx={{ fontSize: "0.9375rem" }} />
+            Resume
+          </Box>
+
+          <IconButton
+            onClick={() => setMobileOpen(v => !v)}
+            size="small"
+            aria-label="Open menu"
+            sx={{
+              display: { xs: "flex", md: "none" },
+              color: scrolled ? "var(--text-secondary)" : "rgba(255,255,255,0.90)",
+            }}
+          >
+            {mobileOpen
+              ? <CloseIcon  sx={{ fontSize: 20 }} />
+              : <MenuIcon   sx={{ fontSize: 20 }} />}
+          </IconButton>
+        </Box>
+      </Box>
+
+      {/* Mobile drawer */}
+      {mobileOpen && (
+        <Box
+          className="no-print"
+          sx={{
+            position: "fixed",
+            top: 64, left: 0, right: 0,
+            zIndex: 99,
+            bgcolor: "var(--bg-card)",
+            borderBottom: "1px solid var(--border)",
+            boxShadow: "var(--shadow-lg)",
+            px: 3, py: 2,
+            display: { xs: "flex", md: "none" },
+            flexDirection: "column",
+            gap: 0.5,
+          }}
+        >
+          {NAV_LINKS.map(({ label, id }) => (
+            <Box
+              key={id}
+              component="button"
+              onClick={() => scrollTo(id)}
+              sx={{
+                display: "block",
+                textAlign: "left",
+                px: 1, py: 1.25,
+                fontSize: "0.9375rem",
+                fontWeight: 500,
+                color: "var(--text-primary)",
+                background: "none",
+                border: "none",
+                borderBottom: "1px solid var(--border)",
+                cursor: "pointer",
+                "&:hover": { color: "var(--accent)" },
+              }}
+            >
+              {label}
+            </Box>
+          ))}
+          <Box
+            component="button"
+            onClick={() => { window.print(); setMobileOpen(false) }}
+            sx={{
+              mt: 1.5, py: 1.25,
+              fontSize: "0.875rem",
+              fontWeight: 600,
+              color: "var(--accent)",
+              bgcolor: "var(--accent-muted)",
+              border: "1px solid var(--accent-border)",
+              borderRadius: 2,
+              cursor: "pointer",
+            }}
+          >
+            Download Resume PDF
+          </Box>
+        </Box>
+      )}
+    </>
+  )
+}
+
+/* ─────────────────────────────────────────────────
+   HERO SECTION
+───────────────────────────────────────────────── */
+const HeroSection = ({ fm }) => {
+  const linkedIn = fm.links?.find(l => l.label === "LinkedIn")
+  const email    = fm.links?.find(l => l.href?.startsWith("mailto:"))
 
   return (
     <Box
+      id="hero"
       sx={{
-        border: `2px solid ${TEAL}`,
-        borderRadius: 1,
-        p: 1.5,
-        minWidth: 200,
+        minHeight: { xs: "100svh", md: "100vh" },
+        background: "var(--bg-hero)",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        pt: "64px",
+        pb: { xs: 8, md: 10 },
+        px: { xs: 3, sm: 4, md: 8 },
+        position: "relative",
+        overflow: "hidden",
+        /* decorative glow circles */
+        "&::before": {
+          content: '""',
+          position: "absolute",
+          top: "15%", right: "-8%",
+          width: { xs: 260, md: 500 },
+          height: { xs: 260, md: 500 },
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(14,165,233,0.13) 0%, transparent 70%)",
+          pointerEvents: "none",
+        },
+        "&::after": {
+          content: '""',
+          position: "absolute",
+          bottom: "8%", left: "2%",
+          width: { xs: 180, md: 320 },
+          height: { xs: 180, md: 320 },
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(14,165,233,0.07) 0%, transparent 70%)",
+          pointerEvents: "none",
+        },
       }}
     >
-      <Typography
+      <Box
         sx={{
-          fontSize: "0.7rem",
-          fontWeight: 700,
-          color: TEAL,
-          textTransform: "uppercase",
-          letterSpacing: "0.08em",
-          mb: 1,
-          textAlign: "right",
+          maxWidth: 1100,
+          mx: "auto",
+          width: "100%",
+          display: "flex",
+          flexDirection: { xs: "column", lg: "row" },
+          alignItems: { xs: "flex-start", lg: "center" },
+          gap: { xs: 6, lg: 10 },
+          position: "relative",
+          zIndex: 1,
         }}
       >
-        Contact
-      </Typography>
-      {phoneDisplay && (
-        <Box sx={{ mb: 0.5 }}>
-          <Typography
-            sx={{
-              fontSize: "0.72rem",
-              fontWeight: 600,
-              color: TEAL,
-              textAlign: "right",
-            }}
-          >
-            PHONE:
-          </Typography>
-          <Typography
-            component="a"
-            href={phoneLink.href}
-            sx={{
-              fontSize: "0.78rem",
-              color: TEXT_DARK,
-              textAlign: "right",
-              display: "block",
-              textDecoration: "none",
-            }}
-          >
-            {phoneDisplay}
-          </Typography>
-        </Box>
-      )}
-      {emailDisplay && (
-        <Box>
-          <Typography
-            sx={{
-              fontSize: "0.72rem",
-              fontWeight: 600,
-              color: TEAL,
-              textAlign: "right",
-            }}
-          >
-            EMAIL:
-          </Typography>
-          <Typography
-            component="a"
-            href={emailLink.href}
-            sx={{
-              fontSize: "0.78rem",
-              color: TEAL,
-              textAlign: "right",
-              display: "block",
-              textDecoration: "none",
-              "&:hover": { textDecoration: "underline" },
-            }}
-          >
-            {emailDisplay}
-          </Typography>
-        </Box>
-      )}
-    </Box>
-  )
-}
-
-/* ─── Profile Section (Sidebar) ─── */
-const ProfileSection = ({ tagline, aboutHtml }) => {
-  if (!tagline && !aboutHtml) return null
-  return (
-    <Box sx={{ mb: 3 }}>
-      <SidebarSectionHeader>Profile</SidebarSectionHeader>
-      {aboutHtml && (
-        <Typography
-          component="div"
-          sx={{
-            fontSize: "0.82rem",
-            color: TEXT_BODY,
-            lineHeight: 1.65,
-            textAlign: "justify",
-            "& p": { m: 0 },
-          }}
-          dangerouslySetInnerHTML={{ __html: aboutHtml }}
-        />
-      )}
-    </Box>
-  )
-}
-
-/* ─── Education Section (Sidebar) ─── */
-const EducationSection = ({ education }) => {
-  if (!education?.length) return null
-  return (
-    <Box sx={{ mb: 3 }}>
-      <SidebarSectionHeader>Education</SidebarSectionHeader>
-      {education.map((edu, i) => (
-        <Box key={i} sx={{ mb: 1.5 }}>
+        {/* ── Left: photo + identity + social ── */}
+        <Box sx={{ flex: 1 }}>
+          {/* Avatar */}
           <Box
             sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
+              width: { xs: 140, md: 180, lg: 200 },
+              height: { xs: 140, md: 180, lg: 200 },
+              borderRadius: "50%",
+              overflow: "hidden",
+              border: "3px solid rgba(56,189,248,0.50)",
+              boxShadow: "0 0 0 9px rgba(56,189,248,0.10), 0 12px 40px rgba(0,0,0,0.45)",
+              mb: 3.5,
+              flexShrink: 0,
             }}
           >
-            <Typography
-              sx={{
-                fontWeight: 700,
-                fontSize: "0.82rem",
-                color: TEXT_DARK,
-                lineHeight: 1.3,
-                flex: 1,
-              }}
-            >
-              {edu.degree}
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: "0.78rem",
-                color: TEXT_BODY,
-                fontWeight: 500,
-                whiteSpace: "nowrap",
-                ml: 1,
-              }}
-            >
-              {edu.years}
-            </Typography>
+            <Box
+              component="img"
+              src={profilePhoto}
+              alt={fm.name || "Profile photo"}
+              sx={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
           </Box>
+
+          {/* Name */}
+          <Typography
+            component="h1"
+            sx={{
+              fontSize: { xs: "2.625rem", sm: "3.5rem", md: "4.25rem" },
+              fontWeight: 800,
+              lineHeight: 1.0,
+              color: "#ffffff",
+              letterSpacing: "-0.04em",
+              mb: 1.25,
+            }}
+          >
+            {fm.name || ""}
+          </Typography>
+
+          {/* Role */}
           <Typography
             sx={{
-              fontSize: "0.78rem",
-              color: TEAL,
-              fontWeight: 600,
-              lineHeight: 1.4,
+              fontSize: { xs: "1rem", md: "1.1875rem" },
+              fontWeight: 400,
+              color: "rgba(255,255,255,0.65)",
+              mb: 2.5,
+              letterSpacing: "0.01em",
             }}
           >
-            {edu.institution}
+            {fm.role || ""}
           </Typography>
+
+          {/* Tagline */}
+          <Typography
+            sx={{
+              fontSize: { xs: "0.875rem", md: "0.9375rem" },
+              color: "rgba(255,255,255,0.55)",
+              lineHeight: 1.8,
+              maxWidth: 560,
+              mb: 4,
+            }}
+          >
+            {fm.tagline || ""}
+          </Typography>
+
+          {/* Social links */}
+          <Box sx={{ display: "flex", gap: 1.5, flexWrap: "wrap" }}>
+            {linkedIn && (
+              <Box
+                component="a"
+                href={linkedIn.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn profile"
+                sx={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 1,
+                  px: 2.5, py: 1,
+                  fontSize: "0.875rem",
+                  fontWeight: 600,
+                  color: "#38bdf8",
+                  bgcolor: "rgba(56,189,248,0.10)",
+                  border: "1px solid rgba(56,189,248,0.35)",
+                  borderRadius: 2,
+                  textDecoration: "none",
+                  transition: "all 0.2s",
+                  "&:hover": { bgcolor: "#0ea5e9", color: "#fff", borderColor: "#0ea5e9" },
+                }}
+              >
+                <LinkedInIcon sx={{ fontSize: "1.0625rem" }} />
+                LinkedIn
+              </Box>
+            )}
+            {email && (
+              <Box
+                component="a"
+                href={email.href}
+                aria-label="Send email"
+                sx={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 1,
+                  px: 2.5, py: 1,
+                  fontSize: "0.875rem",
+                  fontWeight: 600,
+                  color: "rgba(255,255,255,0.70)",
+                  bgcolor: "rgba(255,255,255,0.06)",
+                  border: "1px solid rgba(255,255,255,0.15)",
+                  borderRadius: 2,
+                  textDecoration: "none",
+                  transition: "all 0.2s",
+                  "&:hover": { bgcolor: "rgba(255,255,255,0.12)", color: "#ffffff" },
+                }}
+              >
+                <EmailIcon sx={{ fontSize: "1.0625rem" }} />
+                Email
+              </Box>
+            )}
+          </Box>
         </Box>
-      ))}
+
+        {/* ── Right: metrics grid ── */}
+        {fm.metrics?.length > 0 && (
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: 1.5,
+              flexShrink: 0,
+              width: { xs: "100%", sm: 320, lg: 340 },
+            }}
+          >
+            {fm.metrics.map(({ value, label }, i) => (
+              <Box
+                key={i}
+                sx={{
+                  bgcolor: "rgba(255,255,255,0.04)",
+                  backdropFilter: "blur(8px)",
+                  WebkitBackdropFilter: "blur(8px)",
+                  border: "1px solid rgba(255,255,255,0.10)",
+                  borderRadius: 2.5,
+                  p: { xs: 2.5, md: 3 },
+                  textAlign: "center",
+                  transition: "border-color 0.2s",
+                  "&:hover": { borderColor: "rgba(56,189,248,0.35)" },
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontSize: { xs: "1.875rem", md: "2.375rem" },
+                    fontWeight: 800,
+                    color: "#38bdf8",
+                    lineHeight: 1,
+                    mb: 0.75,
+                    letterSpacing: "-0.04em",
+                  }}
+                >
+                  {value}
+                </Typography>
+                <Typography
+                  sx={{
+                    fontSize: "0.6875rem",
+                    color: "rgba(255,255,255,0.50)",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.09em",
+                    fontWeight: 500,
+                    lineHeight: 1.35,
+                  }}
+                >
+                  {label}
+                </Typography>
+              </Box>
+            ))}
+          </Box>
+        )}
+      </Box>
     </Box>
   )
 }
 
-/* ─── Achievements Section (Sidebar) ─── */
-const AchievementsSection = ({ impact }) => {
-  if (!impact?.length) return null
+/* ─────────────────────────────────────────────────
+   ABOUT SECTION
+───────────────────────────────────────────────── */
+const AboutSection = ({ tagline, about }) => {
+  const highlights = about?.highlights || []
+  const expertise  = about?.expertise  || []
+  const impact     = about?.impact     || []
+
+  // Only the first prose highlight ("My Unfair Advantage") — item-card grids are cut
+  const proseHighlight = highlights.find(h => h.content)
+
+  if (!tagline && !proseHighlight && !expertise.length) return null
+
   return (
-    <Box sx={{ mb: 3 }}>
-      <SidebarSectionHeader>Achievements and Innovation</SidebarSectionHeader>
-      {impact.map((item, i) => (
+    <Box component="section" id="about" sx={{ pt: 10, pb: 6 }}>
+      <SectionHeader>About</SectionHeader>
+
+      {/* Tagline pull-quote */}
+      {tagline && (
         <Box
-          key={i}
           sx={{
-            display: "flex",
-            alignItems: "flex-start",
-            mb: 1.5,
-            gap: 1,
+            borderLeft: "4px solid var(--accent)",
+            pl: 3, py: 0.5,
+            mb: 5,
+            bgcolor: "var(--accent-muted)",
+            borderRadius: "0 12px 12px 0",
           }}
         >
           <Typography
             sx={{
-              color: TEAL,
-              fontSize: "0.7rem",
+              fontSize: { xs: "1.0625rem", md: "1.1875rem" },
+              fontStyle: "italic",
+              color: "var(--text-secondary)",
               lineHeight: 1.8,
-              flexShrink: 0,
             }}
           >
-            &#9658;
-          </Typography>
-          <Typography
-            sx={{
-              fontSize: "0.78rem",
-              color: TEXT_BODY,
-              lineHeight: 1.6,
-              textAlign: "justify",
-            }}
-          >
-            {item}
+            {tagline}
           </Typography>
         </Box>
-      ))}
+      )}
+
+      {/* Single prose section */}
+      {proseHighlight && (
+        <Box sx={{ mb: 6 }}>
+          <Overline>{proseHighlight.title}</Overline>
+          <Typography sx={{ fontSize: "1.0625rem", color: "var(--text-secondary)", lineHeight: 1.85 }}>
+            {proseHighlight.content}
+          </Typography>
+        </Box>
+      )}
+
+      {/* Two-column: Domain Expertise left, Key Achievements right */}
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", lg: "1fr 1fr" },
+          gap: { xs: 5, lg: 7 },
+        }}
+      >
+        {expertise.length > 0 && (
+          <Box>
+            <Overline>Domain Expertise</Overline>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
+              {expertise.map((item, i) => (
+                <Box key={i} sx={{ display: "flex", gap: 2, alignItems: "flex-start" }}>
+                  <Box
+                    sx={{
+                      mt: "7px", flexShrink: 0,
+                      width: 5, height: 5,
+                      borderRadius: "50%",
+                      bgcolor: "var(--accent)",
+                      opacity: 0.8,
+                    }}
+                  />
+                  <Box>
+                    <Typography
+                      sx={{ fontSize: "0.9375rem", fontWeight: 700, color: "var(--text-primary)", mb: 0.3 }}
+                    >
+                      {item.title}
+                    </Typography>
+                    <Typography
+                      sx={{ fontSize: "0.9375rem", color: "var(--text-secondary)", lineHeight: 1.7 }}
+                    >
+                      {item.content}
+                    </Typography>
+                  </Box>
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        )}
+
+        {impact.length > 0 && (
+          <Box>
+            <Overline>Key Achievements</Overline>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+              {impact.map((item, i) => (
+                <Box key={i} sx={{ display: "flex", alignItems: "flex-start", gap: 1.75 }}>
+                  <Box
+                    sx={{
+                      mt: "9px", flexShrink: 0,
+                      width: 6, height: 6,
+                      borderRadius: "50%",
+                      bgcolor: "var(--accent)",
+                    }}
+                  />
+                  <Typography sx={{ fontSize: "1rem", color: "var(--text-secondary)", lineHeight: 1.8 }}>
+                    {item}
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        )}
+      </Box>
     </Box>
   )
 }
 
-/* ─── Skills Section (Main) ─── */
-const SkillsSection = ({ skills, expertise }) => {
-  // Use expertise for paragraph-style display (matching the resume image)
-  // and skills for detailed tag-style listing
-  const hasExpertise = expertise?.length > 0
-  const hasSkills = skills?.length > 0
-
-  if (!hasExpertise && !hasSkills) return null
-
-  return (
-    <Box sx={{ mb: 3.5 }}>
-      <MainSectionHeader>Skills</MainSectionHeader>
-
-      {/* Expertise as paragraph-style entries */}
-      {hasExpertise &&
-        expertise.map((item, i) => (
-          <Box key={`exp-${i}`} sx={{ mb: 1.5 }}>
-            <Typography
-              component="span"
-              sx={{ fontSize: "0.88rem", fontWeight: 700, color: TEXT_DARK }}
-            >
-              {item.title}:
-            </Typography>{" "}
-            <Typography
-              component="span"
-              sx={{ fontSize: "0.85rem", color: TEXT_BODY, lineHeight: 1.65 }}
-            >
-              {item.content}
-            </Typography>
-          </Box>
-        ))}
-
-      {/* Skills as grouped listings */}
-      {hasSkills &&
-        skills.map((category, i) => (
-          <Box key={`skill-${i}`} sx={{ mb: 1.5 }}>
-            <Typography
-              component="span"
-              sx={{ fontSize: "0.88rem", fontWeight: 700, color: TEXT_DARK }}
-            >
-              {category.title}:
-            </Typography>{" "}
-            <Typography
-              component="span"
-              sx={{ fontSize: "0.85rem", color: TEXT_BODY, lineHeight: 1.65 }}
-            >
-              {(category.items || []).join(", ")}
-            </Typography>
-          </Box>
-        ))}
-    </Box>
-  )
-}
-
-/* ─── Work Experience Section (Main) ─── */
-const detailKeys = [
-  "initiatives",
-  "buildSystem",
-  "security",
-  "achievements",
-  "deliverables",
-  "focus",
-]
-
+/* ─────────────────────────────────────────────────
+   EXPERIENCE SECTION  (vertical timeline)
+───────────────────────────────────────────────── */
 const ExperienceSection = ({ experience }) => {
   if (!experience?.length) return null
+
   return (
-    <Box sx={{ mb: 3 }}>
-      <MainSectionHeader>Work Experience</MainSectionHeader>
-      {experience.map((job, i) => (
-        <Box key={i} sx={{ mb: 3 }}>
-          {/* Company and Duration */}
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "baseline",
-              flexWrap: "wrap",
-              gap: 0.8,
-              mb: 0.3,
-            }}
-          >
-            <Typography
-              sx={{ fontWeight: 700, fontSize: "0.9rem", color: TEXT_DARK }}
-            >
-              {job.company}
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: "0.8rem",
-                color: TEXT_BODY,
-                fontStyle: "italic",
-              }}
-            >
-              ({job.duration})
-            </Typography>
-          </Box>
+    <Box component="section" id="experience" sx={{ pt: 10, pb: 6 }}>
+      <SectionHeader>Experience</SectionHeader>
 
-          {/* Title */}
-          <Typography
-            sx={{
-              fontWeight: 700,
-              fontSize: "0.88rem",
-              color: TEAL_DARK,
-              mb: 0.5,
-            }}
-          >
-            {job.title}
-          </Typography>
+      <Box sx={{ position: "relative" }}>
+        {/* Vertical rail — desktop only */}
+        <Box
+          sx={{
+            display: { xs: "none", md: "block" },
+            position: "absolute",
+            left: 16,
+            top: 10, bottom: 10,
+            width: 2,
+            bgcolor: "var(--border)",
+            borderRadius: 1,
+          }}
+        />
 
-          {/* Description */}
-          {job.description && (
-            <Typography
-              sx={{
-                fontSize: "0.83rem",
-                color: TEXT_BODY,
-                lineHeight: 1.65,
-                mb: 0.8,
-              }}
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+          {experience.map((job, i) => (
+            <Box
+              key={i}
+              sx={{ display: "flex", alignItems: "flex-start", gap: { xs: 0, md: 4 } }}
             >
-              {job.description}
-            </Typography>
-          )}
+              {/* Timeline dot */}
+              <Box
+                sx={{
+                  display: { xs: "none", md: "flex" },
+                  flexShrink: 0,
+                  width: 34, height: 34,
+                  borderRadius: "50%",
+                  bgcolor: "var(--bg-primary)",
+                  border: "2px solid var(--accent)",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  mt: 1,
+                  zIndex: 1,
+                }}
+              >
+                <Box sx={{ width: 10, height: 10, borderRadius: "50%", bgcolor: "var(--accent)" }} />
+              </Box>
 
-          {/* Detail bullet points from all possible keys */}
-          {detailKeys.map((key) => {
-            if (!job[key]?.length) return null
-            return (
-              <Box key={key} component="ul" sx={{ pl: 3, m: 0, mb: 0.5 }}>
-                {job[key].map((item, j) => (
+              {/* Card */}
+              <Card sx={{ flex: 1 }}>
+                {/* Header */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "flex-start",
+                    flexWrap: "wrap",
+                    gap: 1,
+                    mb: 1.25,
+                  }}
+                >
+                  <Box>
+                    <Typography
+                      sx={{
+                        fontSize: "1.1875rem",
+                        fontWeight: 700,
+                        color: "var(--text-primary)",
+                        lineHeight: 1.3,
+                      }}
+                    >
+                      {job.title}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: "0.9375rem",
+                        fontWeight: 600,
+                        color: "var(--accent)",
+                        mt: 0.25,
+                        textTransform: "capitalize",
+                      }}
+                    >
+                      {job.company}
+                    </Typography>
+                  </Box>
                   <Box
-                    component="li"
-                    key={j}
                     sx={{
-                      fontSize: "0.83rem",
-                      color: TEXT_BODY,
-                      lineHeight: 1.6,
-                      mb: 0.4,
-                      listStyleType: '"\\25CB  "',
-                      pl: 0.5,
+                      px: 1.5, py: 0.375,
+                      bgcolor: "var(--accent-muted)",
+                      border: "1px solid var(--accent-border)",
+                      borderRadius: 10,
+                      fontSize: "0.8125rem",
+                      fontWeight: 500,
+                      color: "var(--accent)",
+                      whiteSpace: "nowrap",
                     }}
                   >
-                    {item}
+                    {job.duration}
+                  </Box>
+                </Box>
+
+                {/* Description */}
+                {job.description && (
+                  <Typography
+                    sx={{
+                      fontSize: "1rem",
+                      color: "var(--text-secondary)",
+                      lineHeight: 1.75,
+                      mb: 1.5,
+                    }}
+                  >
+                    {job.description}
+                  </Typography>
+                )}
+
+                {/* Bullet arrays */}
+                {DETAIL_KEYS.map(key => {
+                  if (!job[key]?.length) return null
+                  return (
+                    <Box key={key} component="ul" sx={{ pl: 0, m: 0, mb: 1, listStyle: "none" }}>
+                      {job[key].map((item, j) => (
+                        <Box
+                          key={j}
+                          component="li"
+                          sx={{ display: "flex", alignItems: "flex-start", gap: 1.5, mb: 0.875 }}
+                        >
+                          <Box
+                            sx={{
+                              mt: "8px",
+                              flexShrink: 0,
+                              width: 5, height: 5,
+                              borderRadius: "50%",
+                              bgcolor: "var(--accent)",
+                            }}
+                          />
+                          <Typography
+                            sx={{ fontSize: "1rem", color: "var(--text-secondary)", lineHeight: 1.7 }}
+                          >
+                            {item}
+                          </Typography>
+                        </Box>
+                      ))}
+                    </Box>
+                  )
+                })}
+
+                {/* Technology tags */}
+                {job.technologies?.length > 0 && (
+                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.75, mt: 1.5 }}>
+                    {job.technologies.map((tech, j) => (
+                      <Box
+                        key={j}
+                        sx={{
+                          px: 1.25, py: 0.25,
+                          fontSize: "0.75rem",
+                          fontWeight: 500,
+                          color: "var(--text-muted)",
+                          bgcolor: "var(--bg-primary)",
+                          border: "1px solid var(--border)",
+                          borderRadius: 1,
+                        }}
+                      >
+                        {tech}
+                      </Box>
+                    ))}
+                  </Box>
+                )}
+              </Card>
+            </Box>
+          ))}
+        </Box>
+      </Box>
+    </Box>
+  )
+}
+
+/* ─────────────────────────────────────────────────
+   SKILLS SECTION  (categorized pill chips)
+───────────────────────────────────────────────── */
+const SkillsSection = ({ skills }) => {
+  if (!skills?.length) return null
+
+  return (
+    <Box component="section" id="skills" sx={{ pt: 10, pb: 6 }}>
+      <SectionHeader>Skills</SectionHeader>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
+        {skills.map((category, i) => {
+          const c = CHIP_COLORS[i % CHIP_COLORS.length]
+          return (
+            <Box key={i}>
+              <Typography
+                sx={{
+                  fontSize: "0.9375rem",
+                  fontWeight: 700,
+                  color: "var(--text-primary)",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em",
+                  mb: 1.75,
+                }}
+              >
+                {category.title}
+              </Typography>
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
+                {(category.items || []).map((skill, j) => (
+                  <Box
+                    key={j}
+                    sx={{
+                      px: 1.625, py: 0.5,
+                      fontSize: "0.9375rem",
+                      fontWeight: 500,
+                      color: c.text,
+                      bgcolor: c.bg,
+                      border: `1px solid ${c.border}`,
+                      borderRadius: 1.5,
+                      transition: "all 0.15s",
+                      "&:hover": {
+                        transform: "translateY(-2px)",
+                        boxShadow: `0 4px 12px ${c.border}`,
+                      },
+                    }}
+                  >
+                    {skill}
                   </Box>
                 ))}
               </Box>
-            )
-          })}
-
-          {/* Impact note */}
-          {job.impactNote && (
-            <Typography
-              sx={{
-                fontSize: "0.83rem",
-                color: TEXT_BODY,
-                fontStyle: "italic",
-                mt: 0.5,
-              }}
-            >
-              <Box
-                component="span"
-                sx={{ fontWeight: 700, color: TEXT_DARK }}
-              >
-                Impact:{" "}
-              </Box>
-              {job.impactNote}
-            </Typography>
-          )}
-
-          {/* Technologies */}
-          {job.technologies?.length > 0 && (
-            <Typography sx={{ fontSize: "0.82rem", color: "#64748b", mt: 0.5 }}>
-              <Box
-                component="span"
-                sx={{ fontWeight: 600, color: TEXT_BODY }}
-              >
-                Technologies:{" "}
-              </Box>
-              {job.technologies.join(" · ")}
-            </Typography>
-          )}
-        </Box>
-      ))}
+            </Box>
+          )
+        })}
+      </Box>
     </Box>
   )
 }
 
-/* ─── Main Page ─── */
+/* ─────────────────────────────────────────────────
+   EDUCATION SECTION
+───────────────────────────────────────────────── */
+const EducationSection = ({ education }) => {
+  if (!education?.length) return null
+
+  return (
+    <Box component="section" id="education" sx={{ pt: 10, pb: 10 }}>
+      <SectionHeader>Education</SectionHeader>
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+          gap: 2.5,
+        }}
+      >
+        {education.map((edu, i) => (
+          <Card key={i}>
+            <Typography
+              sx={{
+                fontSize: "0.75rem",
+                fontWeight: 700,
+                color: "var(--accent)",
+                textTransform: "uppercase",
+                letterSpacing: "0.09em",
+                mb: 1,
+              }}
+            >
+              {edu.years}
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: "1.125rem",
+                fontWeight: 700,
+                color: "var(--text-primary)",
+                lineHeight: 1.35,
+                mb: 0.5,
+              }}
+            >
+              {edu.degree}
+            </Typography>
+            <Typography sx={{ fontSize: "1rem", color: "var(--text-secondary)" }}>
+              {edu.institution}
+            </Typography>
+          </Card>
+        ))}
+      </Box>
+    </Box>
+  )
+}
+
+/* ─────────────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────────────── */
+const FooterSection = ({ fm }) => {
+  const linkedIn = fm.links?.find(l => l.label === "LinkedIn")
+  const email    = fm.links?.find(l => l.href?.startsWith("mailto:"))
+  const year     = new Date().getFullYear()
+
+  return (
+    <Box
+      component="footer"
+      className="no-print"
+      sx={{
+        borderTop: "1px solid var(--border)",
+        bgcolor: "var(--bg-card)",
+        py: 4,
+        px: { xs: 3, md: 6 },
+        display: "flex",
+        flexDirection: { xs: "column", sm: "row" },
+        alignItems: "center",
+        justifyContent: "space-between",
+        gap: 2,
+      }}
+    >
+      <Typography sx={{ fontSize: "0.8125rem", color: "var(--text-muted)" }}>
+        {fm.footer?.copyright || `© ${year} ${fm.name || ""}. All rights reserved.`}
+      </Typography>
+      <Box sx={{ display: "flex", gap: 1.75 }}>
+        {linkedIn && (
+          <Box
+            component="a"
+            href={linkedIn.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn"
+            sx={{
+              color: "var(--text-muted)",
+              display: "flex",
+              alignItems: "center",
+              transition: "color 0.2s",
+              "&:hover": { color: "var(--accent)" },
+            }}
+          >
+            <LinkedInIcon sx={{ fontSize: "1.25rem" }} />
+          </Box>
+        )}
+        {email && (
+          <Box
+            component="a"
+            href={email.href}
+            aria-label="Email"
+            sx={{
+              color: "var(--text-muted)",
+              display: "flex",
+              alignItems: "center",
+              transition: "color 0.2s",
+              "&:hover": { color: "var(--accent)" },
+            }}
+          >
+            <EmailIcon sx={{ fontSize: "1.25rem" }} />
+          </Box>
+        )}
+      </Box>
+    </Box>
+  )
+}
+
+/* ─────────────────────────────────────────────────
+   ROOT PAGE COMPONENT
+───────────────────────────────────────────────── */
 const ContentPage = () => {
+  const [isDark, setIsDark] = useState(false)
+
+  /* Initialise from localStorage / OS preference — browser-only */
+  useEffect(() => {
+    const saved       = localStorage.getItem("portfolio-theme")
+    const prefersDark = window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false
+    const dark        = saved ? saved === "dark" : prefersDark
+    setIsDark(dark)
+    document.documentElement.setAttribute("data-theme", dark ? "dark" : "light")
+  }, [])
+
+  const toggleDark = () => {
+    const next = !isDark
+    setIsDark(next)
+    document.documentElement.setAttribute("data-theme", next ? "dark" : "light")
+    localStorage.setItem("portfolio-theme", next ? "dark" : "light")
+  }
+
   const data = useStaticQuery(graphql`
     query ProfileContent {
       allMarkdownRemark(
@@ -456,280 +1044,45 @@ const ContentPage = () => {
         limit: 1
       ) {
         nodes {
-          html
           frontmatter {
             name
             role
             tagline
-            metrics {
-              value
-              label
-            }
-            links {
-              label
-              href
-            }
-            education {
-              degree
-              institution
-              years
-            }
+            metrics { value label }
+            links   { label href }
+            education { degree institution years }
             about {
-              highlights {
-                title
-                content
-                items {
-                  label
-                  text
-                }
-              }
-              expertise {
-                title
-                content
-              }
+              highlights { title content items { label text } }
+              expertise  { title content }
               impact
             }
             experience {
-              title
-              company
-              duration
-              description
-              initiatives
-              buildSystem
-              security
-              achievements
-              impactNote
-              deliverables
-              focus
-              technologies
+              title company duration description
+              initiatives buildSystem security
+              achievements deliverables focus
+              impactNote technologies
             }
-            skills {
-              title
-              items
-            }
-            cta {
-              title
-              items
-              buttons {
-                label
-                href
-              }
-              closing
-            }
-            footer {
-              copyright
-              links {
-                label
-                href
-              }
-            }
+            skills { title items }
+            footer { copyright }
           }
         }
       }
     }
   `)
 
-  const node = data?.allMarkdownRemark?.nodes?.[0]
-  const fm = node?.frontmatter || {}
-  const aboutHtml = node?.html || null
+  const fm = data?.allMarkdownRemark?.nodes?.[0]?.frontmatter || {}
 
   return (
-    <Box
-      sx={{
-        backgroundColor: "#e8e8e8",
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        py: { xs: 0, md: 2 },
-      }}
-    >
-      {/* Resume Container */}
-      <Box
-        sx={{
-          maxWidth: 1050,
-          width: "100%",
-          display: "flex",
-          flexDirection: { xs: "column", md: "row" },
-          minHeight: { md: "auto" },
-          boxShadow: { md: "0 0 30px rgba(0,0,0,0.1)" },
-        }}
-      >
-        {/* ─── Left Sidebar ─── */}
-        <Box
-          sx={{
-            width: { xs: "100%", md: "35%" },
-            flexShrink: 0,
-            background: `linear-gradient(180deg, ${SIDEBAR_BG_TOP} 0%, ${SIDEBAR_BG_BOTTOM} 100%)`,
-            p: { xs: 3, md: 3 },
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          {/* Photo */}
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              mb: 3,
-              mt: 1,
-            }}
-          >
-            <Box
-              component="img"
-              src={profilePhoto}
-              alt={fm.name || "Profile Photo"}
-              sx={{
-                width: 150,
-                height: 150,
-                borderRadius: "50%",
-                objectFit: "cover",
-                border: "4px solid rgba(255,255,255,0.7)",
-                boxShadow: "0 4px 15px rgba(0,0,0,0.15)",
-              }}
-            />
-          </Box>
-
-          {/* Profile Section */}
-          <ProfileSection tagline={fm.tagline} aboutHtml={aboutHtml} />
-
-          {/* Education Section */}
-          <EducationSection education={fm.education} />
-
-          {/* Achievements Section */}
-          <AchievementsSection impact={fm.about?.impact} />
-        </Box>
-
-        {/* ─── Right Main Content ─── */}
-        <Box
-          sx={{
-            flex: 1,
-            backgroundColor: "#fff",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          {/* ─── Name Header ─── */}
-          <Box
-            sx={{
-              p: { xs: 3, md: 4 },
-              pb: { xs: 2, md: 3 },
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-              flexWrap: "wrap",
-              gap: 2,
-            }}
-          >
-            {/* Name & Role */}
-            <Box sx={{ flex: 1, minWidth: 250 }}>
-              <Typography
-                variant="h1"
-                sx={{
-                  fontSize: { xs: "2rem", md: "2.6rem" },
-                  fontWeight: 400,
-                  lineHeight: 1.15,
-                  color: TEAL,
-                  mb: 0.5,
-                  fontFamily:
-                    "'Georgia', 'Times New Roman', 'Palatino Linotype', serif",
-                }}
-              >
-                {fm.name || ""}
-              </Typography>
-              {fm.role && (
-                <Typography
-                  sx={{
-                    fontSize: { xs: "1rem", md: "1.15rem" },
-                    fontWeight: 400,
-                    color: "#666",
-                    mt: 0.5,
-                  }}
-                >
-                  {fm.role}
-                </Typography>
-              )}
-            </Box>
-
-            {/* Contact Box */}
-            <ContactBox links={fm.links} />
-          </Box>
-
-          {/* ─── Content Area ─── */}
-          <Box
-            sx={{
-              px: { xs: 3, md: 4 },
-              pb: { xs: 3, md: 4 },
-              flex: 1,
-            }}
-          >
-            {/* Skills */}
-            <SkillsSection
-              skills={fm.skills}
-              expertise={fm.about?.expertise}
-            />
-
-            {/* Work Experience */}
-            <ExperienceSection experience={fm.experience} />
-
-            {/* CTA Section */}
-            {fm.cta && (
-              <Box sx={{ mb: 3 }}>
-                <MainSectionHeader>
-                  {fm.cta.title || "Let's Connect"}
-                </MainSectionHeader>
-                {fm.cta.items?.length > 0 && (
-                  <Box component="ul" sx={{ pl: 3, m: 0, mb: 1.5 }}>
-                    {fm.cta.items.map((item, i) => (
-                      <Box
-                        component="li"
-                        key={i}
-                        sx={{
-                          fontSize: "0.83rem",
-                          color: TEXT_BODY,
-                          lineHeight: 1.6,
-                          mb: 0.3,
-                          listStyleType: '"\\25CB  "',
-                          pl: 0.5,
-                        }}
-                      >
-                        {item}
-                      </Box>
-                    ))}
-                  </Box>
-                )}
-                {fm.cta.closing && (
-                  <Typography
-                    sx={{
-                      fontSize: "0.83rem",
-                      color: "#64748b",
-                      fontStyle: "italic",
-                    }}
-                  >
-                    {fm.cta.closing}
-                  </Typography>
-                )}
-              </Box>
-            )}
-          </Box>
-
-          {/* Footer */}
-          {fm.footer?.copyright && (
-            <Box
-              sx={{
-                py: 1.5,
-                px: 4,
-                textAlign: "center",
-                borderTop: "1px solid #e2e8f0",
-                backgroundColor: "#fafafa",
-              }}
-            >
-              <Typography sx={{ color: "#94a3b8", fontSize: "0.75rem" }}>
-                {fm.footer.copyright}
-              </Typography>
-            </Box>
-          )}
-        </Box>
+    <Box sx={{ bgcolor: "var(--bg-primary)", minHeight: "100vh" }}>
+      <StickyNav name={fm.name} isDark={isDark} onToggle={toggleDark} />
+      <HeroSection fm={fm} />
+      <Box sx={{ maxWidth: 1100, mx: "auto", px: { xs: 2.5, sm: 4, md: 6 } }}>
+        <AboutSection      tagline={fm.tagline}       about={fm.about}         />
+        <ExperienceSection experience={fm.experience}                           />
+        <SkillsSection     skills={fm.skills}                                   />
+        <EducationSection  education={fm.education}                             />
       </Box>
+      <FooterSection fm={fm} />
     </Box>
   )
 }

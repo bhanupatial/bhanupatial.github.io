@@ -6,23 +6,24 @@ import './src/styles/global.css';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#1a8aaa',
-      dark: '#0d6e84',
+      main: '#0ea5e9',
+      dark: '#0284c7',
     },
     secondary: {
       main: '#64748b',
     },
     background: {
-      default: '#ffffff',
-      paper: '#ffffff',
+      default: 'var(--bg-primary)',
+      paper: 'var(--bg-card)',
     },
     text: {
-      primary: '#333333',
-      secondary: '#666666',
+      primary: 'var(--text-primary)',
+      secondary: 'var(--text-secondary)',
     },
   },
   typography: {
     fontFamily: [
+      'Inter',
       'Segoe UI',
       'Roboto',
       '-apple-system',
@@ -45,7 +46,9 @@ const theme = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          backgroundColor: '#f0f0f0',
+          backgroundColor: 'var(--bg-primary)',
+          color: 'var(--text-primary)',
+          transition: 'background-color 0.25s ease, color 0.25s ease',
         },
       },
     },

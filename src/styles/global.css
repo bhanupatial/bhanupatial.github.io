@@ -1,85 +1,137 @@
-* {
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap');
+
+/* ─── Design Tokens / CSS Variables ─── */
+:root {
+  --bg-primary:     #ffffff;
+  --bg-card:        #f8fafc;
+  --bg-nav:         rgba(255, 255, 255, 0.95);
+  --bg-hero:        linear-gradient(135deg, #0c1a2e 0%, #1e3a5f 55%, #0f4c6e 100%);
+
+  --accent:         #4f46e5;
+  --accent-dark:    #4338ca;
+  --accent-muted:   rgba(79, 70, 229, 0.07);
+  --accent-border:  rgba(79, 70, 229, 0.22);
+
+  --text-primary:   #111827;
+  --text-secondary: #374151;
+  --text-muted:     #6b7280;
+
+  --border:         #e5e7eb;
+  --border-hover:   #d1d5db;
+
+  --shadow-sm:  0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.03);
+  --shadow-md:  0 4px 16px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg:  0 10px 40px rgba(0,0,0,0.10), 0 4px 12px rgba(0,0,0,0.05);
+
+  --nav-height: 64px;
+
+  /* Skill chip palettes — light mode */
+  --chip-1-text: #4338ca; --chip-1-bg: rgba(79,70,229,.08);   --chip-1-border: rgba(79,70,229,.22);
+  --chip-2-text: #6d28d9; --chip-2-bg: rgba(124,58,237,.08);  --chip-2-border: rgba(124,58,237,.22);
+  --chip-3-text: #047857; --chip-3-bg: rgba(5,150,105,.08);   --chip-3-border: rgba(5,150,105,.22);
+  --chip-4-text: #b45309; --chip-4-bg: rgba(217,119,6,.08);   --chip-4-border: rgba(217,119,6,.22);
+  --chip-5-text: #b91c1c; --chip-5-bg: rgba(220,38,38,.08);   --chip-5-border: rgba(220,38,38,.22);
+}
+
+/* ─── Dark Mode ─── */
+[data-theme="dark"] {
+  --bg-primary:     #0d1117;
+  --bg-card:        #161b22;
+  --bg-nav:         rgba(13, 17, 23, 0.95);
+  --bg-hero:        linear-gradient(135deg, #020c1b 0%, #0d1d34 55%, #0a2540 100%);
+
+  --accent:         #818cf8;
+  --accent-dark:    #6366f1;
+  --accent-muted:   rgba(129, 140, 248, 0.12);
+  --accent-border:  rgba(129, 140, 248, 0.28);
+
+  --text-primary:   #f9fafb;
+  --text-secondary: #9ca3af;
+  --text-muted:     #6b7280;
+
+  --border:         #21262d;
+  --border-hover:   #30363d;
+
+  --shadow-sm:  0 1px 3px rgba(0,0,0,0.30), 0 1px 2px rgba(0,0,0,0.15);
+  --shadow-md:  0 4px 16px rgba(0,0,0,0.35), 0 2px 4px rgba(0,0,0,0.15);
+  --shadow-lg:  0 10px 40px rgba(0,0,0,0.45), 0 4px 12px rgba(0,0,0,0.25);
+
+  /* Skill chip palettes — dark mode (lighter for legibility on dark bg) */
+  --chip-1-text: #a5b4fc; --chip-1-bg: rgba(129,140,248,.15); --chip-1-border: rgba(129,140,248,.28);
+  --chip-2-text: #c4b5fd; --chip-2-bg: rgba(196,181,253,.15); --chip-2-border: rgba(196,181,253,.28);
+  --chip-3-text: #6ee7b7; --chip-3-bg: rgba(110,231,183,.15); --chip-3-border: rgba(110,231,183,.28);
+  --chip-4-text: #fcd34d; --chip-4-bg: rgba(253,211,77,.15);  --chip-4-border: rgba(253,211,77,.28);
+  --chip-5-text: #fca5a5; --chip-5-bg: rgba(252,165,165,.15); --chip-5-border: rgba(252,165,165,.28);
+}
+
+/* ─── Base Reset ─── */
+*, *::before, *::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: var(--nav-height);
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', Roboto, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Century Gothic', 'Nunito', CenturyGothic, AppleGothic, 'Trebuchet MS', sans-serif;
   line-height: 1.6;
-  color: #333333;
-  background: #f0f0f0;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-a {
-  transition: color 0.2s ease;
-}
+a { transition: color 0.2s ease; }
 
-/* Print styles for PDF Download */
+button { font-family: inherit; }
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--border-hover);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* ─── Selection ─── */
+::selection       { background: var(--accent-muted); color: var(--accent); }
+::-moz-selection  { background: var(--accent-muted); color: var(--accent); }
+
+/* ─── Focus ─── */
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button:focus   { outline: none; }
+
+/* ─── Print / PDF ─── */
 @media print {
+  :root {
+    --bg-primary:     #ffffff;
+    --bg-card:        #ffffff;
+    --text-primary:   #1e293b;
+    --text-secondary: #475569;
+    --accent:         #0ea5e9;
+    --border:         #e2e8f0;
+  }
+
   * {
     -webkit-print-color-adjust: exact !important;
     color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 
-  body {
-    background-color: #ffffff !important;
-  }
+  body { background: #ffffff !important; }
 
-  .no-print {
-    display: none !important;
-  }
+  .no-print { display: none !important; }
 
-  section, .MuiBox-root {
-    page-break-inside: avoid;
-  }
+  @page { margin: 0.6in; size: letter portrait; }
 
-  *, *::before, *::after {
-    animation: none !important;
-    transition: none !important;
-  }
+  section, .print-card { page-break-inside: avoid; break-inside: avoid; }
 }
 
-/* Responsive typography */
-@media (max-width: 600px) {
-  body { font-size: 14px; }
-}
-
-/* Focus visible for accessibility */
-:focus-visible {
-  outline: 2px solid #1a8aaa;
-  outline-offset: 2px;
-}
-
-button:focus { outline: none; }
-
-/* Selection color */
-::selection {
-  background-color: #1a8aaa;
-  color: white;
-}
-
-::-moz-selection {
-  background-color: #1a8aaa;
-  color: white;
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb {
-  background: rgba(26,138,170,0.3);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(26,138,170,0.5);
-}
+/* ─── Mobile base ─── */
+@media (max-width: 600px) { html { font-size: 15px; } }
